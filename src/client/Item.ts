@@ -39,7 +39,7 @@ export class Item extends Thing {
         [x, y] = [0, 1];
       } else if (this.getCount() < 25) {
         [x, y] = [1, 1];
-      } else if (this.getCount() < 10) {
+      } else if (this.getCount() < 50) {
         [x, y] = [2, 1];
       } else {
         [x, y] = [3, 1];
