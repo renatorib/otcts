@@ -1,0 +1,16 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #111;
+}
+
+#app {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas {
+  width: 800px;
+}

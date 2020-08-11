@@ -1,0 +1,19 @@
+{
+  "root": true,
+  "ecmaVersion": 6,
+  "sourceType": "module",
+  "ecmaFeatures": {
+    "modules": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended"
+  ],
+  "rules": {
+    "no-unused-vars": "error",
+    "no-useless-call": "error",
+    "no-useless-return": "error"
+  }
+}
