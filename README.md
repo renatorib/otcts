@@ -18,7 +18,7 @@ Aimed to be 100% compatible with outdated Tibia.dat/spr and TFS protocol.
 
 #### Item
 
-|                    |                                           |
+| Item               |                                           |
 | ------------------ | ----------------------------------------- |
 | :heavy_check_mark: | Draw                                      |
 | :heavy_check_mark: | Sprite patterns                           |
