@@ -7,13 +7,14 @@ Aimed to be 100% compatible with outdated Tibia.dat/spr and TFS protocol.
 
 #### General
 
-| ------------------ | ---------------------------------------------------- |
-| :heavy_check_mark: | Tile elevation |
-| :heavy_check_mark: | Sync animations (global timer) |
-| :x: | Stackpos / order |
-| :x: | Contextual floor visibility change |
-| :x: | Contextual menu on right click (look, use, use with) |
-| :x: | Light shaders |
+| :information_source: |                                                      |
+| -------------------- | ---------------------------------------------------- |
+| :heavy_check_mark:   | Tile elevation                                       |
+| :heavy_check_mark:   | Sync animations (global timer)                       |
+| :x:                  | Stackpos / order                                     |
+| :x:                  | Contextual floor visibility change                   |
+| :x:                  | Contextual menu on right click (look, use, use with) |
+| :x:                  | Light shaders                                        |
 
 #### Item
 
