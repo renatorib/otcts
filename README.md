@@ -25,6 +25,8 @@ Aimed to be 100% compatible with outdated Tibia.dat/spr and TFS protocol.
 | :heavy_check_mark: | Sprite animations        |
 | :heavy_check_mark: | Sprite bigger than 32x32 |
 | :heavy_check_mark: | Stackable sprites        |
+| :x:                | Hangable sprites         |
+| :x:                | Fluid & splash sprites   |
 
 #### Creature
 
