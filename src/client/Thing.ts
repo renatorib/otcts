@@ -12,19 +12,20 @@ const flat = (val: number | number[]) => (Array.isArray(val) ? val : [val]);
 
 export abstract class Thing {
   symbol = Symbol("thing");
-  clientId: number;
-  virtualPosition: Position = new Position();
-  useVirtualPosition = false;
-  position: Position = new Position();
-  display: PIXI.Sprite = new PIXI.Sprite();
-  elevation = 0;
   drawn = false;
-  textures: Cache = new Cache();
-  abstract category: DatThingCategory;
+  clientId: number;
+  useVirtualPosition = false;
+  virtualPosition = new Position();
+  position = new Position();
+  display = new PIXI.Sprite();
+  elevation = 0;
+  textures = new Cache();
 
   constructor(clientId: number) {
     this.clientId = clientId;
   }
+
+  abstract category: DatThingCategory;
 
   abstract getThingType(): DatThingType;
 
@@ -139,7 +140,7 @@ export abstract class Thing {
     return this.textures.get(cacheKeys);
   }
 
-  getDisplayPosition(): [number, number] {
+  getWorldDisplayPosition(): [number, number] {
     const { x, y, z } = this.useVirtualPosition
       ? this.virtualPosition
       : this.position;
@@ -153,6 +154,23 @@ export abstract class Thing {
       (x - width + z - 6) * tileSize - this.elevation - displacement.x,
       (y - height + z - 6) * tileSize - this.elevation - displacement.y,
     ];
+  }
+
+  getTileDisplayPosition(): [number, number] {
+    const tileSize = 32;
+    const width = this.frameGroup.getWidth();
+    const height = this.frameGroup.getHeight();
+    const displacement = this.dat.getDisplacement();
+
+    return [
+      -((width - 1) * tileSize) - this.elevation - displacement.x,
+      -((height - 1) * tileSize) - this.elevation - displacement.y,
+    ];
+  }
+
+  getDisplayPosition(): [number, number] {
+    // return this.getWorldDisplayPosition();
+    return this.getTileDisplayPosition();
   }
 
   onBeforeDraw() {}

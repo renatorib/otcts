@@ -39,11 +39,12 @@ Aimed to be 100% compatible with outdated Tibia.dat/spr and TFS protocol.
 
 #### Effect
 
-|     |                   |
-| --- | ----------------- |
-| :x: | Draw              |
-| :x: | Sprite patterns   |
-| :x: | Sprite animations |
+|                    |                                     |
+| ------------------ | ----------------------------------- |
+| :heavy_check_mark: | Draw                                |
+| :x:                | Sprite patterns                     |
+| :heavy_check_mark: | Sprite animations                   |
+| :x:                | Remove game object on animation end |
 
 #### Missile
 

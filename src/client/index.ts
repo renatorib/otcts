@@ -4,6 +4,7 @@ import { Viewport, Plugin } from "pixi-viewport";
 import { game } from "./Game";
 import { Creature } from "./Creature";
 import { Position } from "../core/structures/Position";
+import { Effect } from "./Effect";
 
 export const main = () => {
   game.on("load", start);
@@ -12,6 +13,9 @@ export const main = () => {
 const start = async () => {
   const app = new PIXI.Application();
   document.getElementById("app")!.appendChild(app.view);
+  document.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  });
 
   const VIEWPORT_WIDTH = 15 * 32;
   const VIEWPORT_HEIGHT = 11 * 32;
@@ -46,10 +50,12 @@ const start = async () => {
     pressedKeys.has(ev.which) && pressedKeys.delete(ev.which);
   });
 
-  const playerPos = [23, 22, 7];
   const player = new Creature(1);
-  // player.outfit.setAddons(3);
-  game.map.getTile(playerPos)?.addCreature(player);
+  player.outfit.setId(131);
+  player.outfit.setAddons(3);
+  game.map.getTile([23, 22, 7])?.addCreature(player);
+
+  game.map.getTile([23, 22, 7])?.addEffect(new Effect(3));
 
   update();
 
@@ -122,34 +128,7 @@ const start = async () => {
   });
 
   function update() {
-    let zRange = player.position.z <= 7 ? [7, 0] : [14, 8];
-    let yRange = [player.position.y - 6, player.position.y + 6];
-    let xRange = [player.position.x - 8, player.position.x + 8];
-
-    for (let z = zRange[0]; z >= zRange[1]; z--) {
-      for (let y = yRange[0]; y <= yRange[1]; y++) {
-        for (let x = xRange[0]; x <= xRange[1]; x++) {
-          const tile = game.map.getTile([x, y, z]);
-          if (tile) {
-            if (tile.gameObjects.length === 0) {
-              tile.draw();
-            }
-          }
-        }
-      }
-    }
-
-    viewport.removeChildren();
-    for (let z = zRange[0]; z >= zRange[1]; z--) {
-      for (let y = yRange[0]; y <= yRange[1]; y++) {
-        for (let x = xRange[0]; x <= xRange[1]; x++) {
-          const tile = game.map.getTile([x, y, z]);
-          if (tile && tile.gameObjects.length > 0) {
-            viewport.addChild(...tile.gameObjects);
-          }
-        }
-      }
-    }
+    game.map.render(player.position, viewport);
   }
 
   Object.assign(globalThis, {
