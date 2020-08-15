@@ -20,4 +20,9 @@ export class Point {
   mul(ratio: number): Point {
     return new Point(this.x * ratio, this.y * ratio);
   }
+
+  set(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
 }

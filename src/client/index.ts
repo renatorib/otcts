@@ -53,8 +53,9 @@ const start = async () => {
   const player = new Creature(1);
   player.outfit.setId(131);
   player.outfit.setAddons(3);
-  game.map.getTile([23, 22, 7])?.addCreature(player);
+  player.outfit.setMount(373);
 
+  game.map.getTile([23, 22, 7])?.addCreature(player);
   game.map.getTile([23, 22, 7])?.addEffect(new Effect(3));
 
   update();
@@ -72,11 +73,11 @@ const start = async () => {
   }
 
   app.ticker.add(() => {
-    const { x, y } = player.useVirtualPosition
-      ? player.virtualPosition
-      : player.position;
-    viewport.left = (x - 7) * 32;
-    viewport.top = (y - 5) * 32;
+    const { position } = player;
+    const displayOffset = player.getDisplayOffset();
+
+    viewport.left = (position.x - 7) * 32 + displayOffset.x;
+    viewport.top = (position.y - 5) * 32 + displayOffset.y;
 
     const drag = viewport.plugins.get("drag") as Plugin & { paused: boolean };
     if (pressedKeys.has(Keys.Space)) {

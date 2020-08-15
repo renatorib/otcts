@@ -14,8 +14,6 @@ export abstract class Thing {
   symbol = Symbol("thing");
   drawn = false;
   clientId: number;
-  useVirtualPosition = false;
-  virtualPosition = new Position();
   position = new Position();
   display = new PIXI.Sprite();
   elevation = 0;
@@ -116,6 +114,10 @@ export abstract class Thing {
     return this.getPhaseSprite(this.getCurrentPhase());
   }
 
+  processSprite(sprite: Sprite) {
+    return sprite;
+  }
+
   getDisplayTexture(): PIXI.Texture {
     const phase = this.getCurrentPhase();
     const frameGroupType = this.getFrameGroupType();
@@ -126,7 +128,7 @@ export abstract class Thing {
     const cacheKeys = { phase, frameGroupType, x, y, z };
 
     if (!this.textures.has(cacheKeys)) {
-      const sprite = this.getSprite();
+      const sprite = this.processSprite(this.getSprite());
       this.textures.set(
         cacheKeys,
         PIXI.Texture.fromBuffer(
@@ -140,37 +142,27 @@ export abstract class Thing {
     return this.textures.get(cacheKeys);
   }
 
-  getWorldDisplayPosition(): [number, number] {
-    const { x, y, z } = this.useVirtualPosition
-      ? this.virtualPosition
-      : this.position;
-
-    const tileSize = 32;
-    const width = this.frameGroup.getWidth();
-    const height = this.frameGroup.getHeight();
-    const displacement = this.dat.getDisplacement();
-
-    return [
-      (x - width + z - 6) * tileSize - this.elevation - displacement.x,
-      (y - height + z - 6) * tileSize - this.elevation - displacement.y,
-    ];
+  getDisplayDisplacement(): Point {
+    return this.dat.getDisplacement();
   }
 
-  getTileDisplayPosition(): [number, number] {
+  getDisplayOffset(): Point {
+    return new Point(0, 0);
+  }
+
+  getDisplayPosition(): Point {
     const tileSize = 32;
     const width = this.frameGroup.getWidth();
     const height = this.frameGroup.getHeight();
-    const displacement = this.dat.getDisplacement();
+    const displacement = this.getDisplayDisplacement();
+    const displayOffset = this.getDisplayOffset();
 
-    return [
+    const point = new Point(
       -((width - 1) * tileSize) - this.elevation - displacement.x,
-      -((height - 1) * tileSize) - this.elevation - displacement.y,
-    ];
-  }
+      -((height - 1) * tileSize) - this.elevation - displacement.y
+    );
 
-  getDisplayPosition(): [number, number] {
-    // return this.getWorldDisplayPosition();
-    return this.getTileDisplayPosition();
+    return point.add(displayOffset);
   }
 
   onBeforeDraw() {}
@@ -183,15 +175,18 @@ export abstract class Thing {
   update() {
     this.onBeforeUpdate();
 
-    const [x, y] = this.getDisplayPosition();
+    const position = this.getDisplayPosition();
     const texture = this.getDisplayTexture();
 
     if (this.display.texture !== texture) {
       this.display.texture = texture;
     }
 
-    if (this.display.position.x !== x || this.display.position.y !== y) {
-      this.display.position.set(x, y);
+    if (
+      this.display.position.x !== position.x ||
+      this.display.position.y !== position.y
+    ) {
+      this.display.position.set(position.x, position.y);
     }
 
     this.onAfterUpdate();
@@ -202,12 +197,12 @@ export abstract class Thing {
       this.onBeforeDraw();
 
       /* Look on item */
-      this.display.interactive = true;
+      /* this.display.interactive = true;
       this.display.on("rightdown", (event: any) => {
         event.data.originalEvent.preventDefault();
         event.data.originalEvent.stopPropagation();
         console.log(event);
-      });
+      }); */
 
       /* this.display.on("mouseover", (event: any) => {
         console.log(this.display.tint);

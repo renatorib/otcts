@@ -101,6 +101,7 @@ export class Tile {
 
   addCreature(creature: Creature) {
     creature.position = this.position;
+    creature.update();
     this.creatures.push(creature);
   }
 
@@ -113,11 +114,13 @@ export class Tile {
     const item = new Item(clientId);
     item.position = this.position.clone();
     if (count) item.setCount(count);
+    item.update();
     this.items.push(item);
   }
 
   addEffect(effect: Effect) {
     effect.position = this.position;
+    effect.update();
     this.effects.push(effect);
   }
 

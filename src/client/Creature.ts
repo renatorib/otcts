@@ -10,6 +10,7 @@ import { Outfit } from "../core/structures/Outfit";
 import { Thing } from "./Thing";
 import { Sprite } from "../core/spr/Sprite";
 import { Cooldown } from "./Cooldown";
+import { Point } from "../core/structures/Point";
 
 export class Creature extends Thing {
   category = DatThingCategory.ThingCategoryCreature;
@@ -20,6 +21,8 @@ export class Creature extends Thing {
   walkBlockCooldown = new Cooldown();
   direction: Direction = Direction.South;
   prevPosition: Position = new Position();
+  nextPosition: Position = new Position();
+  mount!: Creature;
 
   getFrameGroupType() {
     return this.walking ? FrameGroupType.Walking : FrameGroupType.Idle;
@@ -96,6 +99,49 @@ export class Creature extends Thing {
     return { x, z, y };
   }
 
+  getDisplayDisplacement() {
+    if (this.outfit.getMount() > 0) {
+      return game.dat.getCreature(this.outfit.getMount()).getDisplacement();
+    }
+
+    return this.getThingType().getDisplacement();
+  }
+
+  getDisplayOffset() {
+    if (this.walkCooldown.isNotExpired()) {
+      const progress = this.walkCooldown.progress();
+      if (this.position.equals(this.prevPosition)) {
+        const xDiff = this.nextPosition.x - this.position.x;
+        const yDiff = this.nextPosition.y - this.position.y;
+        const x = transition(0, xDiff, progress);
+        const y = transition(0, yDiff, progress);
+        return new Point(x * 32, y * 32);
+      } else if (this.position.equals(this.nextPosition)) {
+        const xDiff = this.prevPosition.x - this.position.x;
+        const yDiff = this.prevPosition.y - this.position.y;
+        const x = transition(xDiff, 0, progress);
+        const y = transition(yDiff, 0, progress);
+        return new Point(x * 32, y * 32);
+      }
+    }
+
+    return new Point(0, 0);
+  }
+
+  processSprite(sprite: Sprite) {
+    this.mount = new Creature(0);
+    this.mount.outfit.setId(this.outfit.getMount());
+    this.mount.position = this.position;
+    this.mount.walking = this.walking;
+    this.mount.walkBlockCooldown = this.walkBlockCooldown;
+    this.mount.walkCooldown = this.walkCooldown;
+    this.mount.direction = this.direction;
+
+    const mountSprite = this.mount.getSprite();
+    mountSprite.blit(new Point(0, 0), sprite);
+    return mountSprite;
+  }
+
   walkTo(to: Position) {
     const currentTile = game.map.getTile(this.position.toCoords());
     const nextTile = game.map.getTile(to.toCoords());
@@ -107,9 +153,9 @@ export class Creature extends Thing {
 
     this.walkCooldown.timeout(250);
     this.walking = true;
-    this.useVirtualPosition = true;
     this.direction = this.position.direction(to);
     this.prevPosition = this.position;
+    this.nextPosition = to;
 
     if (this.direction > 3) {
       this.walkBlockCooldown.timeout(500);
@@ -117,24 +163,15 @@ export class Creature extends Thing {
 
     currentTile?.removeCreature(this);
     nextTile.addCreature(this);
-
-    setTimeout(() => {
-      currentTile?.draw();
-      nextTile.draw();
-    }, 50);
+    currentTile?.draw();
+    nextTile.draw();
   }
 
   onBeforeUpdate() {
     if (this.walking) {
       if (this.walkCooldown.isNotExpired()) {
-        const progress = this.walkCooldown.progress();
-        const x = transition(this.prevPosition.x, this.position.x, progress);
-        const y = transition(this.prevPosition.y, this.position.y, progress);
-        const z = this.prevPosition.z;
-        this.virtualPosition.set(x, y, z);
       } else {
         this.walking = false;
-        this.useVirtualPosition = false;
       }
     }
   }
