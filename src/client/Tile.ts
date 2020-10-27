@@ -16,7 +16,7 @@ export class Tile {
   flags!: OtbmTileFlags;
   items: Item[] = [];
   creatures: Creature[] = [];
-  effects: Effect[] = [];
+  effects = new Set<Effect>();
 
   constructor(
     position: Position,
@@ -121,12 +121,11 @@ export class Tile {
   addEffect(effect: Effect) {
     effect.position = this.position;
     effect.update();
-    this.effects.push(effect);
+    this.effects.add(effect);
   }
 
   removeEffect(effect: Effect) {
-    const _effect = this.effects.find((c) => c.symbol === effect.symbol);
-    this.effects.splice(this.effects.indexOf(_effect!), 1);
+    this.effects.delete(effect);
   }
 
   getItems() {

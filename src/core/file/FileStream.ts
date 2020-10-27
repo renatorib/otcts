@@ -11,8 +11,12 @@ export abstract class FileStream {
     this.offset = 0;
   }
 
-  getUint8Array(): Uint8Array {
-    return this.data.getUint8Array();
+  getUint8Array(byteOffset?: number): Uint8Array {
+    return this.data.getUint8Array(byteOffset);
+  }
+
+  getOffsetBuffer(byteOffset?: number): Buffer {
+    return this.data.getBuffer(this.offset);
   }
 
   getU8(): number {

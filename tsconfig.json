@@ -11,6 +11,7 @@
     "rootDir": "src",
     "moduleResolution": "node",
     "noImplicitThis": false,
-    "types": ["./src/types/*"]
-  }
+    "typeRoots": ["node_modules/@types", "types"]
+  },
+  "exclude": ["./types/**/*", "./dist/**/*"]
 }

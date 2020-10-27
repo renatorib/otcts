@@ -5,6 +5,7 @@ import {
 } from "../core/common/enums";
 import { Thing } from "./Thing";
 import { game } from "./Game";
+import { draggable } from "./dnd";
 
 export class Item extends Thing {
   count: number = 1;
@@ -64,5 +65,11 @@ export class Item extends Thing {
 
   getThingType() {
     return game.dat.getItem(this.clientId);
+  }
+
+  onAfterDraw() {
+    if (!this.dat.isNotMoveable || this.dat.isPickupable) {
+      draggable("item", this.display);
+    }
   }
 }

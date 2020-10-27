@@ -9,8 +9,16 @@ export class DataBuffer {
     this.buffer = new DataView(new ArrayBuffer(this.capacity));
   }
 
-  getUint8Array(): Uint8Array {
-    return new Uint8Array(this.buffer.buffer, 0, this.size);
+  getArrayBuffer() {
+    return this.buffer.buffer;
+  }
+
+  getUint8Array(byteOffset: number = 0): Uint8Array {
+    return new Uint8Array(this.buffer.buffer, byteOffset, this.size);
+  }
+
+  getBuffer(byteOffset?: number): Buffer {
+    return Buffer.from(this.getArrayBuffer(), byteOffset);
   }
 
   reserve(newSize: number) {

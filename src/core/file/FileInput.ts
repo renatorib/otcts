@@ -1,6 +1,15 @@
 import { FileStream } from "./FileStream";
 import { getFetch } from "../common/helpers";
 
+function toArrayBuffer(buf: Buffer) {
+  const ab = new ArrayBuffer(buf.length);
+  const view = new Uint8Array(ab);
+  for (var i = 0; i < buf.length; ++i) {
+    view[i] = buf[i];
+  }
+  return ab;
+}
+
 export class FileInput extends FileStream {
   static fromUrl = async (url: string) => {
     const fetch = getFetch();
@@ -12,6 +21,10 @@ export class FileInput extends FileStream {
       console.error(e);
       return null;
     }
+  };
+
+  static fromBuffer = (buf: Buffer) => {
+    return new FileInput(toArrayBuffer(buf));
   };
 
   constructor(buffer: ArrayBuffer) {

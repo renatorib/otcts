@@ -7,10 +7,6 @@ export class Effect extends Thing {
 
   constructor(clientId: number) {
     super(clientId);
-
-    setTimeout(() => {
-      game.map.getTile(this.position.toCoords())?.removeEffect(this);
-    }, this.frameGroup.getAnimator()?.getDuration());
   }
 
   getPatterns() {

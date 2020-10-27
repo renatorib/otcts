@@ -1,4 +1,5 @@
 import { EventEmitter } from "./EventEmitter";
+import { Direction } from "../core/common/enums";
 
 enum Keys {
   Control = 17,
@@ -29,10 +30,15 @@ enum Keys {
 }
 
 type KeyMap = {
-  [key: number]: [string /* emit type */, string /* emit event */];
+  [key: number]: [string /* emit type */, any /* emit event */];
 };
 
 export class Input extends EventEmitter {
+  constructor() {
+    super();
+    this.setup();
+  }
+
   keysPressed = new Set();
 
   shiftKeyMap: KeyMap = {
@@ -51,10 +57,10 @@ export class Input extends EventEmitter {
   };
 
   controlKeyMap: KeyMap = {
-    [Keys.ArrowLeft]: ["turn", "w"],
-    [Keys.ArrowRight]: ["turn", "e"],
-    [Keys.ArrowUp]: ["turn", "n"],
-    [Keys.ArrowDown]: ["turn", "s"],
+    [Keys.ArrowLeft]: ["turn", Direction.West],
+    [Keys.ArrowRight]: ["turn", Direction.East],
+    [Keys.ArrowUp]: ["turn", Direction.North],
+    [Keys.ArrowDown]: ["turn", Direction.South],
     [Keys.F1]: ["hotkey", "ctrl+f1"],
     [Keys.F2]: ["hotkey", "ctrl+f2"],
     [Keys.F3]: ["hotkey", "ctrl+f3"],
@@ -70,14 +76,14 @@ export class Input extends EventEmitter {
   };
 
   keyMap: KeyMap = {
-    [Keys.ArrowLeft]: ["walk", "w"],
-    [Keys.ArrowRight]: ["walk", "e"],
-    [Keys.ArrowUp]: ["walk", "n"],
-    [Keys.ArrowDown]: ["walk", "s"],
-    [Keys.Home]: ["walk", "nw"],
-    [Keys.End]: ["walk", "sw"],
-    [Keys.PageUp]: ["walk", "ne"],
-    [Keys.PageDown]: ["walk", "se"],
+    [Keys.ArrowLeft]: ["walk", Direction.West],
+    [Keys.ArrowRight]: ["walk", Direction.East],
+    [Keys.ArrowUp]: ["walk", Direction.North],
+    [Keys.ArrowDown]: ["walk", Direction.South],
+    [Keys.Home]: ["walk", Direction.NorthWest],
+    [Keys.End]: ["walk", Direction.SouthWest],
+    [Keys.PageUp]: ["walk", Direction.NorthEast],
+    [Keys.PageDown]: ["walk", Direction.SouthEast],
     [Keys.F1]: ["hotkey", "f1"],
     [Keys.F2]: ["hotkey", "f2"],
     [Keys.F3]: ["hotkey", "f3"],
@@ -95,6 +101,7 @@ export class Input extends EventEmitter {
   setup() {
     document.addEventListener("keydown", (ev) => {
       this.keysPressed.add(ev.which);
+      this.update();
     });
     document.addEventListener("keyup", (ev) => {
       this.keysPressed.delete(ev.which);
