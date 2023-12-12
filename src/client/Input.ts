@@ -1,36 +1,52 @@
 import { EventEmitter } from "./EventEmitter";
 import { Direction } from "../core/common/enums";
 
-enum Keys {
-  Control = 17,
-  Shift = 16,
-  Alt = 18,
-  Space = 32,
-  ArrowRight = 39,
-  ArrowUp = 38,
-  ArrowLeft = 37,
-  ArrowDown = 40,
-  Home = 36,
-  PageUp = 33,
-  PageDown = 34,
-  End = 35,
+export enum InputEvent {
+  Walk = "walk",
+  Turn = "turn",
+  Hotkey = "hotkey",
+  Command = "command",
+}
 
-  F1 = 112,
-  F2 = 113,
-  F3 = 114,
-  F4 = 115,
-  F5 = 116,
-  F6 = 117,
-  F7 = 118,
-  F8 = 119,
-  F9 = 120,
-  F10 = 121,
-  F11 = 122,
-  F12 = 123,
+enum Keys {
+  Control = "Control",
+  Shift = "Shift",
+  Alt = "Alt",
+  Space = "Space",
+  ArrowRight = "ArrowRight",
+  ArrowUp = "ArrowUp",
+  ArrowLeft = "ArrowLeft",
+  ArrowDown = "ArrowDown",
+  Home = "Home",
+  PageUp = "PageUp",
+  PageDown = "PageDown",
+  End = "End",
+
+  A = "a",
+  B = "b",
+  C = "c",
+  D = "d",
+  E = "e",
+  F = "f",
+  G = "g",
+  R = "r",
+
+  F1 = "F1",
+  F2 = "F2",
+  F3 = "F3",
+  F4 = "F4",
+  F5 = "F5",
+  F6 = "F6",
+  F7 = "F7",
+  F8 = "F8",
+  F9 = "F9",
+  F10 = "F10",
+  F11 = "F11",
+  F12 = "F12",
 }
 
 type KeyMap = {
-  [key: number]: [string /* emit type */, any /* emit event */];
+  [key: string]: [InputEvent /* emit type */, any /* emit event */];
 };
 
 export class Input extends EventEmitter {
@@ -42,96 +58,101 @@ export class Input extends EventEmitter {
   keysPressed = new Set();
 
   shiftKeyMap: KeyMap = {
-    [Keys.F1]: ["hotkey", "shift+f1"],
-    [Keys.F2]: ["hotkey", "shift+f2"],
-    [Keys.F3]: ["hotkey", "shift+f3"],
-    [Keys.F4]: ["hotkey", "shift+f4"],
-    [Keys.F5]: ["hotkey", "shift+f5"],
-    [Keys.F6]: ["hotkey", "shift+f6"],
-    [Keys.F7]: ["hotkey", "shift+f7"],
-    [Keys.F8]: ["hotkey", "shift+f8"],
-    [Keys.F9]: ["hotkey", "shift+f9"],
-    [Keys.F10]: ["hotkey", "shift+f10"],
-    [Keys.F11]: ["hotkey", "shift+f11"],
-    [Keys.F12]: ["hotkey", "shift+f12"],
+    [Keys.F1]: [InputEvent.Hotkey, "shift+f1"],
+    [Keys.F2]: [InputEvent.Hotkey, "shift+f2"],
+    [Keys.F3]: [InputEvent.Hotkey, "shift+f3"],
+    [Keys.F4]: [InputEvent.Hotkey, "shift+f4"],
+    [Keys.F5]: [InputEvent.Hotkey, "shift+f5"],
+    [Keys.F6]: [InputEvent.Hotkey, "shift+f6"],
+    [Keys.F7]: [InputEvent.Hotkey, "shift+f7"],
+    [Keys.F8]: [InputEvent.Hotkey, "shift+f8"],
+    [Keys.F9]: [InputEvent.Hotkey, "shift+f9"],
+    [Keys.F10]: [InputEvent.Hotkey, "shift+f10"],
+    [Keys.F11]: [InputEvent.Hotkey, "shift+f11"],
+    [Keys.F12]: [InputEvent.Hotkey, "shift+f12"],
   };
 
   controlKeyMap: KeyMap = {
-    [Keys.ArrowLeft]: ["turn", Direction.West],
-    [Keys.ArrowRight]: ["turn", Direction.East],
-    [Keys.ArrowUp]: ["turn", Direction.North],
-    [Keys.ArrowDown]: ["turn", Direction.South],
-    [Keys.F1]: ["hotkey", "ctrl+f1"],
-    [Keys.F2]: ["hotkey", "ctrl+f2"],
-    [Keys.F3]: ["hotkey", "ctrl+f3"],
-    [Keys.F4]: ["hotkey", "ctrl+f4"],
-    [Keys.F5]: ["hotkey", "ctrl+f5"],
-    [Keys.F6]: ["hotkey", "ctrl+f6"],
-    [Keys.F7]: ["hotkey", "ctrl+f7"],
-    [Keys.F8]: ["hotkey", "ctrl+f8"],
-    [Keys.F9]: ["hotkey", "ctrl+f9"],
-    [Keys.F10]: ["hotkey", "ctrl+f10"],
-    [Keys.F11]: ["hotkey", "ctrl+f11"],
-    [Keys.F12]: ["hotkey", "ctrl+f12"],
+    [Keys.ArrowLeft]: [InputEvent.Turn, Direction.West],
+    [Keys.ArrowRight]: [InputEvent.Turn, Direction.East],
+    [Keys.ArrowUp]: [InputEvent.Turn, Direction.North],
+    [Keys.ArrowDown]: [InputEvent.Turn, Direction.South],
+    [Keys.F1]: [InputEvent.Hotkey, "ctrl+f1"],
+    [Keys.F2]: [InputEvent.Hotkey, "ctrl+f2"],
+    [Keys.F3]: [InputEvent.Hotkey, "ctrl+f3"],
+    [Keys.F4]: [InputEvent.Hotkey, "ctrl+f4"],
+    [Keys.F5]: [InputEvent.Hotkey, "ctrl+f5"],
+    [Keys.F6]: [InputEvent.Hotkey, "ctrl+f6"],
+    [Keys.F7]: [InputEvent.Hotkey, "ctrl+f7"],
+    [Keys.F8]: [InputEvent.Hotkey, "ctrl+f8"],
+    [Keys.F9]: [InputEvent.Hotkey, "ctrl+f9"],
+    [Keys.F10]: [InputEvent.Hotkey, "ctrl+f10"],
+    [Keys.F11]: [InputEvent.Hotkey, "ctrl+f11"],
+    [Keys.F12]: [InputEvent.Hotkey, "ctrl+f12"],
   };
 
   keyMap: KeyMap = {
-    [Keys.ArrowLeft]: ["walk", Direction.West],
-    [Keys.ArrowRight]: ["walk", Direction.East],
-    [Keys.ArrowUp]: ["walk", Direction.North],
-    [Keys.ArrowDown]: ["walk", Direction.South],
-    [Keys.Home]: ["walk", Direction.NorthWest],
-    [Keys.End]: ["walk", Direction.SouthWest],
-    [Keys.PageUp]: ["walk", Direction.NorthEast],
-    [Keys.PageDown]: ["walk", Direction.SouthEast],
-    [Keys.F1]: ["hotkey", "f1"],
-    [Keys.F2]: ["hotkey", "f2"],
-    [Keys.F3]: ["hotkey", "f3"],
-    [Keys.F4]: ["hotkey", "f4"],
-    [Keys.F5]: ["hotkey", "f5"],
-    [Keys.F6]: ["hotkey", "f6"],
-    [Keys.F7]: ["hotkey", "f7"],
-    [Keys.F8]: ["hotkey", "f8"],
-    [Keys.F9]: ["hotkey", "f9"],
-    [Keys.F10]: ["hotkey", "f10"],
-    [Keys.F11]: ["hotkey", "f11"],
-    [Keys.F12]: ["hotkey", "f12"],
+    [Keys.ArrowLeft]: [InputEvent.Walk, Direction.West],
+    [Keys.ArrowRight]: [InputEvent.Walk, Direction.East],
+    [Keys.ArrowUp]: [InputEvent.Walk, Direction.North],
+    [Keys.ArrowDown]: [InputEvent.Walk, Direction.South],
+    [Keys.Home]: [InputEvent.Walk, Direction.NorthWest],
+    [Keys.End]: [InputEvent.Walk, Direction.SouthWest],
+    [Keys.PageUp]: [InputEvent.Walk, Direction.NorthEast],
+    [Keys.PageDown]: [InputEvent.Walk, Direction.SouthEast],
+    [Keys.F1]: [InputEvent.Hotkey, "f1"],
+    [Keys.F2]: [InputEvent.Hotkey, "f2"],
+    [Keys.F3]: [InputEvent.Hotkey, "f3"],
+    [Keys.F4]: [InputEvent.Hotkey, "f4"],
+    [Keys.F5]: [InputEvent.Hotkey, "f5"],
+    [Keys.F6]: [InputEvent.Hotkey, "f6"],
+    [Keys.F7]: [InputEvent.Hotkey, "f7"],
+    [Keys.F8]: [InputEvent.Hotkey, "f8"],
+    [Keys.F9]: [InputEvent.Hotkey, "f9"],
+    [Keys.F10]: [InputEvent.Hotkey, "f10"],
+    [Keys.F11]: [InputEvent.Hotkey, "f11"],
+    [Keys.F12]: [InputEvent.Hotkey, "f12"],
+    [Keys.A]: [InputEvent.Command, "a"],
+    [Keys.B]: [InputEvent.Command, "b"],
+    [Keys.C]: [InputEvent.Command, "c"],
+    [Keys.D]: [InputEvent.Command, "d"],
+    [Keys.E]: [InputEvent.Command, "e"],
+    [Keys.F]: [InputEvent.Command, "f"],
+    [Keys.G]: [InputEvent.Command, "g"],
+    [Keys.R]: [InputEvent.Command, "r"],
   };
 
   setup() {
     document.addEventListener("keydown", (ev) => {
-      this.keysPressed.add(ev.which);
+      this.keysPressed.add(ev.key);
       this.update();
     });
     document.addEventListener("keyup", (ev) => {
-      this.keysPressed.delete(ev.which);
+      this.keysPressed.delete(ev.key);
     });
   }
 
-  pressing(key: number) {
+  pressing(key: string) {
     return this.keysPressed.has(key);
   }
 
   update() {
     if (this.pressing(Keys.Control)) {
       for (const key of Object.keys(this.controlKeyMap)) {
-        const keyCode = parseInt(key, 10);
-        if (this.pressing(parseInt(key, 10))) {
-          this.emit(...this.controlKeyMap[keyCode]);
+        if (this.pressing(key)) {
+          this.emit(...this.controlKeyMap[key]);
         }
       }
     } else if (this.pressing(Keys.Shift)) {
       for (const key of Object.keys(this.shiftKeyMap)) {
-        const keyCode = parseInt(key, 10);
-        if (this.pressing(parseInt(key, 10))) {
-          this.emit(...this.shiftKeyMap[keyCode]);
+        if (this.pressing(key)) {
+          this.emit(...this.shiftKeyMap[key]);
         }
       }
     } else {
       for (const key of Object.keys(this.keyMap)) {
-        const keyCode = parseInt(key, 10);
-        if (this.pressing(parseInt(key, 10))) {
-          this.emit(...this.keyMap[keyCode]);
+        if (this.pressing(key)) {
+          this.emit(...this.keyMap[key]);
         }
       }
     }

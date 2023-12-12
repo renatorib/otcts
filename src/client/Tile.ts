@@ -87,7 +87,9 @@ export class Tile {
     for (let effect of this.effects) {
       effect.elevation = elevation;
       const effectDisplay = effect.draw();
-      gameObjects.push(effectDisplay);
+      if (!effect.expired()) {
+        gameObjects.push(effectDisplay);
+      }
     }
 
     this.display.addChild(...gameObjects);
@@ -122,6 +124,10 @@ export class Tile {
     effect.position = this.position;
     effect.update();
     this.effects.add(effect);
+    /* setTimeout(() => {
+      this.effects.delete(effect);
+      effect.destroy();
+    }, effect.getDuration()); */
   }
 
   removeEffect(effect: Effect) {

@@ -6,7 +6,7 @@ import { OtbmManager } from "../core/otbm/OtbmManager";
 import { XMLManager } from "../core/xml/XMLManager";
 import { EventEmitter } from "./EventEmitter";
 import { Clock } from "./Clock";
-import { Input } from "./Input";
+import { Input, InputEvent } from "./Input";
 import { GameMap } from "./GameMap";
 import { Creature } from "./Creature";
 import { Effect } from "./Effect";
@@ -20,6 +20,21 @@ const OTBM_URL = "http://localhost:5000/server/world.otbm";
 const SPAWN_XML_URL = "http://localhost:5000/server/world-spawn.xml";
 const HOUSE_XML_URL = "http://localhost:5000/server/world-house.xml";
 const OUTFITS_XML_URL = "http://localhost:5000/server/outfits.xml";
+
+const getDirDiff = (direction: Direction) => {
+  const dirDiff: { [k: number]: [number, number, number] } = {
+    [Direction.West]: [-1, 0, 0], // left
+    [Direction.East]: [+1, 0, 0], // right
+    [Direction.North]: [0, -1, 0], // up
+    [Direction.South]: [0, +1, 0], // down
+    [Direction.NorthWest]: [-1, -1, 0], // up left
+    [Direction.NorthEast]: [+1, -1, 0], // up right
+    [Direction.SouthWest]: [-1, +1, 0], // down left
+    [Direction.SouthEast]: [+1, +1, 0], // down right
+  };
+
+  return dirDiff[direction];
+};
 
 class Game extends EventEmitter {
   loaded: boolean;
@@ -62,12 +77,7 @@ class Game extends EventEmitter {
     this.input = new Input();
     document.getElementById("app")!.appendChild(this.app.view);
 
-    this.player.outfit.setId(131);
-    this.player.outfit.setAddons(3);
-    this.player.outfit.setMount(373);
-
     this.map.getTile([23, 22, 7])?.addCreature(this.player);
-    this.map.getTile([23, 22, 7])?.addEffect(new Effect(3));
 
     this.app.ticker.add(() => {
       const { position } = this.player;
@@ -78,23 +88,28 @@ class Game extends EventEmitter {
     });
 
     this.input.on("walk", (direction: Direction) => {
-      const dirDiff: { [k: number]: [number, number, number] } = {
-        [Direction.West]: [-1, 0, 0], // left
-        [Direction.East]: [+1, 0, 0], // right
-        [Direction.North]: [0, -1, 0], // up
-        [Direction.South]: [0, +1, 0], // down
-        [Direction.NorthWest]: [-1, -1, 0], // up left
-        [Direction.NorthEast]: [+1, -1, 0], // up right
-        [Direction.SouthWest]: [-1, +1, 0], // down left
-        [Direction.SouthEast]: [+1, +1, 0], // down right
-      };
-      const diff = dirDiff[direction];
+      const diff = getDirDiff(direction);
       this.player.walkTo(this.player.position.clone().add(...diff));
       this.update();
     });
 
     this.input.on("turn", (direction: Direction) => {
       this.player.direction = direction;
+    });
+
+    this.input.on("command", (cmd: string) => {
+      if (cmd === "r") {
+        this.player.outfit.setMount(
+          this.player.outfit.getMount() !== 0 ? 0 : 373
+        );
+      }
+
+      if (cmd === "a") {
+        this.map
+          .getTile(this.player.position.clone().toCoords())
+          ?.addEffect(new Effect(3));
+        this.update();
+      }
     });
 
     this.loaded = true;

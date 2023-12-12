@@ -4,9 +4,10 @@
   "license": "MIT",
   "main": "index.html",
   "scripts": {
-    "dev:static": "serve ./data -p 5000 --cors",
-    "dev": "parcel serve ./index.html --open",
-    "start": "concurrently 'yarn dev:static' 'yarn dev'",
+    "dev:assets": "serve ./data -p 5000 --cors",
+    "dev:game": "parcel serve ./index.html --open",
+    "dev": "concurrently 'yarn dev:assets' 'yarn dev:game'",
+    "start": "concurrently 'yarn dev:assets' 'yarn dev:game'",
     "build": "parcel build ./index.html ",
     "lint": "eslint . --ext .ts"
   },

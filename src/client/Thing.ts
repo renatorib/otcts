@@ -104,9 +104,13 @@ export abstract class Thing {
     return this.getLayersBlend(layers);
   }
 
+  getElapsedTime() {
+    return game.clock.elapsed();
+  }
+
   getCurrentPhase() {
     return this.frameGroup.animator
-      ? this.frameGroup.animator.getCurrentPhase(game.clock.elapsed())
+      ? this.frameGroup.animator.getCurrentPhase(this.getElapsedTime())
       : 0;
   }
 
@@ -175,18 +179,22 @@ export abstract class Thing {
   update() {
     this.onBeforeUpdate();
 
-    const position = this.getDisplayPosition();
-    const texture = this.getDisplayTexture();
+    if (this.canBeDeleted()) {
+      this.destroy();
+    } else {
+      const position = this.getDisplayPosition();
+      const texture = this.getDisplayTexture();
 
-    if (this.display.texture !== texture) {
-      this.display.texture = texture;
-    }
+      if (this.display.texture !== texture) {
+        this.display.texture = texture;
+      }
 
-    if (
-      this.display.position.x !== position.x ||
-      this.display.position.y !== position.y
-    ) {
-      this.display.position.set(position.x, position.y);
+      if (
+        this.display.position.x !== position.x ||
+        this.display.position.y !== position.y
+      ) {
+        this.display.position.set(position.x, position.y);
+      }
     }
 
     this.onAfterUpdate();
@@ -232,8 +240,13 @@ export abstract class Thing {
   destroy() {
     this.onBeforeDestroy();
 
+    this.display.destroy();
     PIXI.Ticker.shared.remove(this.update, this);
 
     this.onAfterDestroy();
+  }
+
+  canBeDeleted() {
+    return false;
   }
 }

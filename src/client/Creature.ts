@@ -129,6 +129,8 @@ export class Creature extends Thing {
   }
 
   processSprite(sprite: Sprite) {
+    if (this.outfit.getMount() <= 0) return sprite;
+
     this.mount = new Creature(0);
     this.mount.outfit.setId(this.outfit.getMount());
     this.mount.position = this.position;
@@ -151,7 +153,7 @@ export class Creature extends Thing {
     if (!nextTile) return false;
     if (nextTile.isNotWalkable()) return false;
 
-    this.walkCooldown.timeout(250);
+    this.walkCooldown.timeout(150);
     this.walking = true;
     this.direction = this.position.direction(to);
     this.prevPosition = this.position;
