@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
     "strict": true,
-    "module": "commonjs",
     "jsx": "preserve",
     "esModuleInterop": true,
     "sourceMap": true,
     "allowJs": true,
-    "target": "es2016",
-    "lib": ["es6", "dom"],
-    "rootDir": "src",
+    "module": "esnext",
+    "target": "esnext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "moduleResolution": "node",
     "noImplicitThis": false,
-    "typeRoots": ["node_modules/@types", "types"]
+    "typeRoots": ["node_modules/@types", "types"],
+    "skipLibCheck": true
   },
-  "exclude": ["./types/**/*", "./dist/**/*"]
+  "exclude": ["node_modules", "./types/**/*", "./dist/**/*"]
 }

@@ -12,14 +12,14 @@ import { Creature } from "./Creature";
 import { Effect } from "./Effect";
 import { Direction } from "../core/common/enums";
 
-const SPR_URL = "http://localhost:5000/client/Tibia.spr";
-const DAT_URL = "http://localhost:5000/client/Tibia.dat";
-const OTB_URL = "http://localhost:5000/server/items.otb";
-const ITEMS_XML_URL = "http://localhost:5000/server/items.xml";
-const OTBM_URL = "http://localhost:5000/server/world.otbm";
-const SPAWN_XML_URL = "http://localhost:5000/server/world-spawn.xml";
-const HOUSE_XML_URL = "http://localhost:5000/server/world-house.xml";
-const OUTFITS_XML_URL = "http://localhost:5000/server/outfits.xml";
+const SPR_URL = "http://localhost:5173/client/Tibia.spr";
+const DAT_URL = "http://localhost:5173/client/Tibia.dat";
+const OTB_URL = "http://localhost:5173/server/items.otb";
+const ITEMS_XML_URL = "http://localhost:5173/server/items.xml";
+const OTBM_URL = "http://localhost:5173/server/world.otbm";
+const SPAWN_XML_URL = "http://localhost:5173/server/world-spawn.xml";
+const HOUSE_XML_URL = "http://localhost:5173/server/world-house.xml";
+const OUTFITS_XML_URL = "http://localhost:5173/server/outfits.xml";
 
 const getDirDiff = (direction: Direction) => {
   const dirDiff: { [k: number]: [number, number, number] } = {
@@ -99,15 +99,11 @@ class Game extends EventEmitter {
 
     this.input.on("command", (cmd: string) => {
       if (cmd === "r") {
-        this.player.outfit.setMount(
-          this.player.outfit.getMount() !== 0 ? 0 : 373
-        );
+        this.player.outfit.setMount(this.player.outfit.getMount() !== 0 ? 0 : 373);
       }
 
       if (cmd === "a") {
-        this.map
-          .getTile(this.player.position.clone().toCoords())
-          ?.addEffect(new Effect(3));
+        this.map.getTile(this.player.position.clone().toCoords())?.addEffect(new Effect(3));
         this.update();
       }
     });
