@@ -25,7 +25,7 @@ importers:
         version: 1.1.1
       pixi-viewport:
         specifier: ^4.12.1
-        version: 4.38.0(@pixi/display@5.3.12)(@pixi/interaction@5.3.12)(@pixi/math@5.3.12)(@pixi/ticker@5.3.12)
+        version: 4.12.1(pixi.js@5.3.12)
       pixi.js:
         specifier: ^5.3.0
         version: 5.3.12
@@ -915,6 +915,9 @@ packages:
   path-parse@1.0.7:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
 
+  penner@0.1.3:
+    resolution: {integrity: sha512-UzkaC2L6d9J1VzJAFH0TQwuKE/rerpTZkgW6aPLVeu/LdjWn6rnuY9lXcVN1AE9tZVfHrsJ2gZOBsRjpQECNHA==}
+
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
@@ -935,13 +938,10 @@ packages:
     resolution: {integrity: sha512-C3FsVNH1udSEX48gGX1xfvwTWfsYWj5U+8/uK15BGzIGrKoUpghX8hWZwa/OFnakBiiVNmBvemTJR5mcy7iPcg==}
     engines: {node: '>=4'}
 
-  pixi-viewport@4.38.0:
-    resolution: {integrity: sha512-TGj6Ymk/BU0wZcW4c1eP4e96aETJmB7jhjBflMjQU06/ZHPy7qHw8JyDqZ+C84SEg0ewCHjDNZ2vgR3Kjk74BQ==}
+  pixi-viewport@4.12.1:
+    resolution: {integrity: sha512-U4u3YeJRIJBnsATkAhJvoSiYlo6lyDslClDlWbnwzMAHpGi2Zezx0hbU6iT0O5deHarIVOCH3xjKZBSQBwm+og==}
     peerDependencies:
-      '@pixi/display': ^6.5.8
-      '@pixi/interaction': ^6.5.8
-      '@pixi/math': ^6.5.8
-      '@pixi/ticker': ^6.5.8
+      pixi.js: '>=4.6.0'
 
   pixi.js@5.3.12:
     resolution: {integrity: sha512-XZzUhrq/m6fx3E0ESv/zXKEVR/GW82dPmbwdapIqsgAldKT2QqBYMfz1WuPf+Q9moPapywVNjjyxPvh+DNPmIg==}
@@ -2031,6 +2031,8 @@ snapshots:
 
   path-parse@1.0.7: {}
 
+  penner@0.1.3: {}
+
   picocolors@1.1.1: {}
 
   picomatch@2.3.1: {}
@@ -2041,12 +2043,10 @@ snapshots:
 
   pify@3.0.0: {}
 
-  pixi-viewport@4.38.0(@pixi/display@5.3.12)(@pixi/interaction@5.3.12)(@pixi/math@5.3.12)(@pixi/ticker@5.3.12):
+  pixi-viewport@4.12.1(pixi.js@5.3.12):
     dependencies:
-      '@pixi/display': 5.3.12
-      '@pixi/interaction': 5.3.12
-      '@pixi/math': 5.3.12
-      '@pixi/ticker': 5.3.12
+      penner: 0.1.3
+      pixi.js: 5.3.12
 
   pixi.js@5.3.12:
     dependencies:

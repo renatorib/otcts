@@ -50,7 +50,10 @@ class Game extends EventEmitter {
   map!: GameMap;
   input!: Input;
   player = new Creature(1);
-  app = new PIXI.Application();
+  app = new PIXI.Application({
+    width: 15 * 32, // 480px - matches GameMap.VIEWPORT_WIDTH
+    height: 11 * 32, // 352px - matches GameMap.VIEWPORT_HEIGHT
+  });
 
   constructor() {
     super();

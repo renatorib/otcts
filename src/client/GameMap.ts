@@ -31,8 +31,8 @@ export class GameMap {
       interaction: game.app.renderer.plugins.interaction,
     });
 
-    game.app.view.width = GameMap.VIEWPORT_WIDTH;
-    game.app.view.height = GameMap.VIEWPORT_HEIGHT;
+    // Canvas dimensions are set in PIXI.Application initialization in Game.ts
+    // Only set CSS display size here
     game.app.view.style.width = `${GameMap.VIEWPORT_WIDTH * 1.5}px`;
     game.app.view.style.height = `${GameMap.VIEWPORT_HEIGHT * 1.5}px`;
 
@@ -51,7 +51,7 @@ export class GameMap {
 
     const mapData = nodes.find((n) => n.type === OtbmNodeTypes.MapData);
     for (const nodeTileArea of (mapData!.features as OtbmNodeTileArea[]).filter(
-      (n) => n.type === OtbmNodeTypes.TileArea
+      (n) => n.type === OtbmNodeTypes.TileArea,
     )) {
       for (const nodeTile of nodeTileArea.tiles) {
         const { x, y, z, tileId, flags, items } = nodeTile;

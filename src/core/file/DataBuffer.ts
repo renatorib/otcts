@@ -181,33 +181,26 @@ export class DataBuffer {
   getBytes(offset: number, bytesCount: number): ArrayBuffer {
     if (bytesCount == -1) bytesCount = this.size - offset;
 
-    if (offset + bytesCount > this.size)
-      throw new Error("Invalid offset. Cannot read.");
+    if (offset + bytesCount > this.size) throw new Error("Invalid offset. Cannot read.");
 
-    return this.buffer.buffer.slice(offset, offset + bytesCount);
+    return this.buffer.buffer.slice(offset, offset + bytesCount) as ArrayBuffer;
   }
 
   getPosition(offset: number): Position {
-    if (offset + 5 > this.size)
-      throw new Error("DataBuffer: getPosition failed");
+    if (offset + 5 > this.size) throw new Error("DataBuffer: getPosition failed");
 
-    return new Position(
-      this.getU16(offset),
-      this.getU16(offset + 2),
-      this.getU8(offset + 4)
-    );
+    return new Position(this.getU16(offset), this.getU16(offset + 2), this.getU8(offset + 4));
   }
 
   getRgbaPixel(offset: number): Pixel {
     offset = offset * 4;
-    if (offset + 4 > this.size)
-      throw new Error("DataBuffer: getRgbaPixel failed");
+    if (offset + 4 > this.size) throw new Error("DataBuffer: getRgbaPixel failed");
 
     return new Pixel(
       this.getU8(offset),
       this.getU8(offset + 1),
       this.getU8(offset + 2),
-      this.getU8(offset + 3)
+      this.getU8(offset + 3),
     );
   }
 
