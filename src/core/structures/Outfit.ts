@@ -194,10 +194,6 @@ export class Outfit {
       green = loc3 * (1 - loc2);
       blue = red - (loc3 - green) * (6 * loc1 - 5);
     }
-    return new Color(
-      Math.floor(red * 255),
-      Math.floor(green * 255),
-      Math.floor(blue * 255)
-    );
+    return new Color(Math.floor(red * 255), Math.floor(green * 255), Math.floor(blue * 255));
   }
 }

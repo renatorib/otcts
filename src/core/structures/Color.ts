@@ -34,11 +34,7 @@ export class Color {
         return;
       }
     } else if (args.length == 3) {
-      if (
-        typeof args[0] == "number" &&
-        typeof args[1] == "number" &&
-        typeof args[2] == "number"
-      ) {
+      if (typeof args[0] == "number" && typeof args[1] == "number" && typeof args[2] == "number") {
         let r = args[0] / 255;
         let g = args[1] / 255;
         let b = args[2] / 255;
@@ -127,7 +123,7 @@ export class Color {
         (rgba >> 0) & 0xff,
         (rgba >> 8) & 0xff,
         (rgba >> 16) & 0xff,
-        (rgba >> 24) & 0xff
+        (rgba >> 24) & 0xff,
       );
     } else {
       this._r = r / 255;

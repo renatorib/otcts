@@ -1,9 +1,4 @@
-import {
-  DatThingAttr,
-  DatThingCategory,
-  FrameGroupType,
-  GameFeature,
-} from "../common/enums";
+import { DatThingAttr, DatThingCategory, FrameGroupType, GameFeature } from "../common/enums";
 import { Client } from "../structures/Client";
 import { FileInput } from "../file/FileInput";
 import { FileOutput } from "../file/FileOutput";
@@ -34,7 +29,7 @@ export class DatThingType {
     fin: FileOutput,
     category: DatThingCategory,
     client: Client,
-    clientAttributeTranslator: any // TODO: type
+    clientAttributeTranslator: any, // TODO: type
   ) {
     for (let clientAttrString in clientAttributeTranslator) {
       if (clientAttributeTranslator.hasOwnProperty(clientAttrString)) {
@@ -112,8 +107,7 @@ export class DatThingType {
       }
 
       for (let i2 = 0; i2 < frameGroup.spritesIndex.length; i2++) {
-        if (client.getFeature(GameFeature.GameSpritesU32))
-          fin.addU32(frameGroup.spritesIndex[i2]);
+        if (client.getFeature(GameFeature.GameSpritesU32)) fin.addU32(frameGroup.spritesIndex[i2]);
         else fin.addU16(frameGroup.spritesIndex[i2]);
       }
     }
@@ -124,7 +118,7 @@ export class DatThingType {
     category: DatThingCategory,
     fin: FileInput,
     client: Client,
-    clientTranslationArray: any[]
+    clientTranslationArray: any[],
   ) {
     this.null = false;
     this.id = clientId;
@@ -195,7 +189,7 @@ export class DatThingType {
 
     if (!done)
       console.error(
-        `corrupt data (id: ${this.id}, category: ${this.category}, count: ${count}, lastAttr: ${attr})`
+        `corrupt data (id: ${this.id}, category: ${this.category}, count: ${count}, lastAttr: ${attr})`,
       );
 
     let hasFrameGroups =
@@ -217,26 +211,19 @@ export class DatThingType {
       frameGroup.size = new Size(width, height);
       if (width > 1 || height > 1) {
         frameGroup.realSize = fin.getU8();
-        frameGroup.exactSize = Math.min(
-          frameGroup.realSize,
-          Math.max(width * 32, height * 32)
-        );
+        frameGroup.exactSize = Math.min(frameGroup.realSize, Math.max(width * 32, height * 32));
       } else frameGroup.exactSize = 32;
 
       frameGroup.layers = fin.getU8();
       frameGroup.numPatternX = fin.getU8();
       frameGroup.numPatternY = fin.getU8();
-      if (client.getClientVersion() >= 755)
-        frameGroup.numPatternZ = fin.getU8();
+      if (client.getClientVersion() >= 755) frameGroup.numPatternZ = fin.getU8();
       else frameGroup.numPatternZ = 1;
 
       let groupAnimationsPhases = fin.getU8();
       frameGroup.animationPhases = groupAnimationsPhases;
 
-      if (
-        groupAnimationsPhases > 1 &&
-        client.getFeature(GameFeature.GameEnhancedAnimations)
-      ) {
+      if (groupAnimationsPhases > 1 && client.getFeature(GameFeature.GameEnhancedAnimations)) {
         frameGroup.animator = new Animator();
         frameGroup.animator.unserialize(groupAnimationsPhases, fin);
       }
@@ -258,14 +245,12 @@ export class DatThingType {
           frameGroup.numPatternX,
           frameGroup.numPatternY,
           frameGroup.numPatternZ,
-          groupAnimationsPhases
+          groupAnimationsPhases,
         );
 
       frameGroup.spritesIndex = [];
       for (let i = 0; i < totalSprites; i++) {
-        frameGroup.spritesIndex[i] = client.getFeature(
-          GameFeature.GameSpritesU32
-        )
+        frameGroup.spritesIndex[i] = client.getFeature(GameFeature.GameSpritesU32)
           ? fin.getU32()
           : fin.getU16();
       }

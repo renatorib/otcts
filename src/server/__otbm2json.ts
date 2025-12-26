@@ -201,11 +201,7 @@ function serializeOTBM(data: any) {
         buffer.readUInt8(i) === NODE_INIT ||
         buffer.readUInt8(i) === NODE_ESC
       ) {
-        buffer = Buffer.concat([
-          buffer.slice(0, i),
-          Buffer.from([NODE_ESC]),
-          buffer.slice(i),
-        ]);
+        buffer = Buffer.concat([buffer.slice(0, i), Buffer.from([NODE_ESC]), buffer.slice(i)]);
         i++;
       }
     }
@@ -291,11 +287,7 @@ function serializeOTBM(data: any) {
     if (node.text) {
       buffer = Buffer.alloc(1);
       buffer.writeUInt8(HEADERS.OTBM_ATTR_TEXT, 0);
-      attributeBuffer = Buffer.concat([
-        attributeBuffer,
-        buffer,
-        writeASCIIString16LE(node.text),
-      ]);
+      attributeBuffer = Buffer.concat([attributeBuffer, buffer, writeASCIIString16LE(node.text)]);
     }
 
     // House file
@@ -494,10 +486,7 @@ function readOTBM(__INFILE__: any) {
       iEsc = iEsc + index;
 
       // Remove the character from the buffer
-      nodeData = Buffer.concat([
-        nodeData.slice(0, iEsc),
-        nodeData.slice(iEsc + 1),
-      ]);
+      nodeData = Buffer.concat([nodeData.slice(0, iEsc), nodeData.slice(iEsc + 1)]);
     }
   };
 
@@ -581,8 +570,7 @@ function readOTBM(__INFILE__: any) {
         case HEADERS.OTBM_ATTR_DESCRIPTION:
           var descriptionString = readASCIIString16LE(data.slice(i));
           if (properties.description) {
-            properties.description =
-              properties.description + " " + descriptionString;
+            properties.description = properties.description + " " + descriptionString;
           } else {
             properties.description = descriptionString;
           }

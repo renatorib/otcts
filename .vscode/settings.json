@@ -2,6 +2,7 @@
   "[glob:**/*.{ts,js,tsx,jsx}]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
+  "typescript.experimental.useTsgo": true,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"

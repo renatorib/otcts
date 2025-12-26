@@ -2,31 +2,15 @@
   "name": "otcts",
   "version": "1.0.0",
   "license": "MIT",
-  "packageManager": "pnpm@10.14.0",
   "main": "src/app/index.html",
   "scripts": {
+    "prepare": "husky",
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint .",
     "format": "oxfmt .",
-    "format:check": "oxfmt --check .",
-    "type-check": "tsc --noEmit",
-    "prepare": "husky"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "oxfmt --write"
-    ]
-  },
-  "devDependencies": {
-    "@types/node": "^24.10.4",
-    "@types/node-rsa": "^1.0.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
-    "oxfmt": "^0.20.0",
-    "oxlint": "^1.35.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.0"
+    "tsgo-check": "tsgo --noEmit",
+    "tsc-check": "tsc --noEmit"
   },
   "dependencies": {
     "chaussette": "^0.2.5",
@@ -35,5 +19,22 @@
     "node-rsa": "^1.1.1",
     "pixi-viewport": "^6.0.3",
     "pixi.js": "^8.14.3"
-  }
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.4",
+    "@types/node-rsa": "^1.0.0",
+    "@typescript/native-preview": "7.0.0-dev.20251226.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "oxfmt": "^0.20.0",
+    "oxlint": "^1.35.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "oxfmt --write"
+    ]
+  },
+  "packageManager": "pnpm@10.14.0"
 }

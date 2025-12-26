@@ -43,10 +43,7 @@ export class Connection extends EventEmitter {
 
   onClose(event: WebSocketEventMap["close"]) {
     // try to reconnect
-    if (
-      this.reconnectRetries <= this.reconnectMaxRetries &&
-      this.reconnect === true
-    ) {
+    if (this.reconnectRetries <= this.reconnectMaxRetries && this.reconnect === true) {
       this.reconnectRetries++;
       setTimeout(() => this.connect(), this.reconnectRetryTimeout);
     } else {

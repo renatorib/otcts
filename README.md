@@ -1,4 +1,4 @@
-<p align="center"><img src="demo.gif" /></p>
+<p align="center"><img src=".github/images/demo.gif" /></p>
 
 Tibia Client powered by html5 canvas (webgl), implemented in TypeScript.  
 Aimed to be 100% compatible with outdated Tibia.dat/spr and TFS protocol.

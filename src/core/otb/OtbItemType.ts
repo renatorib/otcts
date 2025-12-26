@@ -1,8 +1,4 @@
-import {
-  OtbItemCategory,
-  OtbItemFlags,
-  OtbItemTypeAttr,
-} from "../common/enums";
+import { OtbItemCategory, OtbItemFlags, OtbItemTypeAttr } from "../common/enums";
 import { BinaryTree } from "../file/BinaryTree";
 import { Light } from "../structures/Light";
 import { BinaryTreeOutput } from "../file/BinaryTreeOutput";
@@ -113,10 +109,7 @@ export class OtbItemType {
           if (otbManager.client.getClientVersion() < 960) {
             if (serverId > 20000 && serverId < 20100) {
               serverId -= 20000;
-            } else if (
-              otbManager.getLastId() > 99 &&
-              otbManager.getLastId() != serverId - 1
-            ) {
+            } else if (otbManager.getLastId() > 99 && otbManager.getLastId() != serverId - 1) {
               while (otbManager.getLastId() != serverId - 1) {
                 let tmp = new OtbItemType();
                 tmp.setServerId(otbManager.getLastId());
@@ -127,10 +120,7 @@ export class OtbItemType {
           } else {
             if (serverId > 30000 && serverId < 30100) {
               serverId -= 30000;
-            } else if (
-              otbManager.getLastId() > 99 &&
-              otbManager.getLastId() != serverId - 1
-            ) {
+            } else if (otbManager.getLastId() > 99 && otbManager.getLastId() != serverId - 1) {
               while (otbManager.getLastId() != serverId - 1) {
                 let tmp = new OtbItemType();
                 tmp.setServerId(otbManager.getLastId());
@@ -156,16 +146,10 @@ export class OtbItemType {
           this.setWritable(true);
           break;
         case OtbItemTypeAttr.ItemTypeAttrSpriteHash:
-          this.attribs.set(
-            OtbItemTypeAttr.ItemTypeAttrSpriteHash,
-            node.getString(len)
-          );
+          this.attribs.set(OtbItemTypeAttr.ItemTypeAttrSpriteHash, node.getString(len));
           break;
         case OtbItemTypeAttr.ItemTypeAttrMinimapColor:
-          this.attribs.set(
-            OtbItemTypeAttr.ItemTypeAttrMinimapColor,
-            node.getU16()
-          );
+          this.attribs.set(OtbItemTypeAttr.ItemTypeAttrMinimapColor, node.getU16());
           break;
         case OtbItemTypeAttr.ItemTypeAttr07:
           this.attribs.set(OtbItemTypeAttr.ItemTypeAttr07, node.getU16());
@@ -176,7 +160,7 @@ export class OtbItemType {
         case OtbItemTypeAttr.ItemTypeAttrLight2:
           this.attribs.set(
             OtbItemTypeAttr.ItemTypeAttrLight2,
-            new Light(node.getU16(), node.getU16())
+            new Light(node.getU16(), node.getU16()),
           );
           break;
         case OtbItemTypeAttr.ItemTypeAttrTopOrder:

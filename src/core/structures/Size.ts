@@ -1,7 +1,10 @@
 import { Point } from "./Point";
 
 export class Size {
-  constructor(public wd = -1, public ht = -1) {}
+  constructor(
+    public wd = -1,
+    public ht = -1,
+  ) {}
 
   equals(size: Size) {
     return this.wd == size.wd && this.ht == size.ht;

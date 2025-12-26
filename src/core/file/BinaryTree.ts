@@ -100,8 +100,7 @@ export class BinaryTree {
 
   getU8() {
     this.unserialize();
-    if (this.pos + 1 > this.buffer.size)
-      throw new Error("BinaryTree: getU8 failed");
+    if (this.pos + 1 > this.buffer.size) throw new Error("BinaryTree: getU8 failed");
     let v = this.buffer.getU8(this.pos);
     this.pos += 1;
     return v;
@@ -124,9 +123,7 @@ export class BinaryTree {
     if (len == 0 || !len) len = this.getU16();
 
     if (this.pos + len > this.buffer.size)
-      throw new Error(
-        "BinaryTree: getString failed: string length exceeded buffer size."
-      );
+      throw new Error("BinaryTree: getString failed: string length exceeded buffer size.");
 
     let text = "";
     for (let i = 0; i < len; i++) {

@@ -18,12 +18,7 @@ export class Tile {
   creatures: Creature[] = [];
   effects = new Set<Effect>();
 
-  constructor(
-    position: Position,
-    tileId: number,
-    flags: OtbmTileFlags,
-    nodeItems: OtbmNodeItem[]
-  ) {
+  constructor(position: Position, tileId: number, flags: OtbmTileFlags, nodeItems: OtbmNodeItem[]) {
     this.createDisplay();
     this.setPosition(position);
     this.setFlags(flags);

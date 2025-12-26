@@ -1,3 +1,6 @@
 export class Light {
-  constructor(public intensity = 0, public color = 215) {}
+  constructor(
+    public intensity = 0,
+    public color = 215,
+  ) {}
 }

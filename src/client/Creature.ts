@@ -1,10 +1,6 @@
 import { Position } from "../core/structures/Position";
 import { game } from "./Game";
-import {
-  DatThingCategory,
-  Direction,
-  FrameGroupType,
-} from "../core/common/enums";
+import { DatThingCategory, Direction, FrameGroupType } from "../core/common/enums";
 import { transition } from "../core/common/helpers";
 import { Outfit } from "../core/structures/Outfit";
 import { Thing } from "./Thing";
@@ -39,7 +35,7 @@ export class Creature extends Thing {
       this.outfit.bodyColor, // red = body
       this.outfit.legsColor, // green = legs
       this.outfit.feetColor, // blue = feet
-      this.outfit.headColor // yellow = head
+      this.outfit.headColor, // yellow = head
     );
 
     return sprite;
@@ -181,11 +177,7 @@ export class Creature extends Thing {
   getCurrentPhase() {
     if (this.walking) {
       return Math.round(
-        transition(
-          1,
-          this.frameGroup.getAnimationPhases(),
-          this.walkCooldown.progress()
-        )
+        transition(1, this.frameGroup.getAnimationPhases(), this.walkCooldown.progress()),
       );
     }
 

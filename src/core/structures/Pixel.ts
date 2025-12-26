@@ -7,7 +7,7 @@ export class Pixel {
     public r: number, // 0-255
     public g: number, // 0-255
     public b: number, // 0-255
-    public a: number // 0-255
+    public a: number, // 0-255
   ) {}
 
   isTransparent() {
