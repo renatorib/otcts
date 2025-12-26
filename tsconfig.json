@@ -13,5 +13,5 @@
     "typeRoots": ["node_modules/@types", "types"],
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "./types/**/*", "./src/app/dist/**/*"]
+  "exclude": ["node_modules", "./src/app/dist/**/*"]
 }
