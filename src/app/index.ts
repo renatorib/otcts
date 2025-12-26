@@ -4,7 +4,6 @@ import { main } from "../client";
 main();
 
 /* import "./index.css";
-import "isomorphic-fetch";
 
 import { Client } from "./src/core/structures/Client";
 import { DatManager } from "./src/core/dat/DatManager";

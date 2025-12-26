@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Application } from "pixi.js";
 import { SprManager } from "../core/spr/SprManager";
 import { DatManager } from "../core/dat/DatManager";
 import { OtbManager } from "../core/otb/OtbManager";
@@ -6,7 +6,7 @@ import { OtbmManager } from "../core/otbm/OtbmManager";
 import { XMLManager } from "../core/xml/XMLManager";
 import { EventEmitter } from "./EventEmitter";
 import { Clock } from "./Clock";
-import { Input, InputEvent } from "./Input";
+import { Input } from "./Input";
 import { GameMap } from "./GameMap";
 import { Creature } from "./Creature";
 import { Effect } from "./Effect";
@@ -50,17 +50,25 @@ class Game extends EventEmitter {
   map!: GameMap;
   input!: Input;
   player = new Creature(1);
-  app = new PIXI.Application({
-    width: 15 * 32, // 480px - matches GameMap.VIEWPORT_WIDTH
-    height: 11 * 32, // 352px - matches GameMap.VIEWPORT_HEIGHT
-  });
+  app = new Application();
 
   constructor() {
     super();
 
     this.loaded = false;
     this.clock = new Clock();
-    this.loadAssets();
+    // Start async initialization but don't await in constructor
+    this.init().catch((err) => {
+      console.error("Failed to initialize game:", err);
+    });
+  }
+
+  async init() {
+    await this.app.init({
+      width: 15 * 32, // 480px - matches GameMap.VIEWPORT_WIDTH
+      height: 11 * 32, // 352px - matches GameMap.VIEWPORT_HEIGHT
+    });
+    await this.loadAssets();
   }
 
   async loadAssets() {
@@ -78,7 +86,7 @@ class Game extends EventEmitter {
   onLoadAssets() {
     this.map = GameMap.fromOtbm(this.otbm);
     this.input = new Input();
-    document.getElementById("app")!.appendChild(this.app.view);
+    document.getElementById("app")!.appendChild(this.app.canvas);
 
     this.map.getTile([23, 22, 7])?.addCreature(this.player);
 

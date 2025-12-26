@@ -1,5 +1,4 @@
 import { FileStream } from "./FileStream";
-import { getFetch } from "../common/helpers";
 
 function toArrayBuffer(buf: Buffer) {
   const ab = new ArrayBuffer(buf.length);
@@ -12,8 +11,6 @@ function toArrayBuffer(buf: Buffer) {
 
 export class FileInput extends FileStream {
   static fromUrl = async (url: string) => {
-    const fetch = getFetch();
-
     try {
       const arrBuffer = await fetch(url).then((r) => r.arrayBuffer());
       return new FileInput(arrBuffer);

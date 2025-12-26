@@ -28,13 +28,13 @@ export class GameMap {
       screenHeight: GameMap.VIEWPORT_HEIGHT,
       worldWidth: 55 * 32, // 55 sqm width
       worldHeight: 55 * 32, // 55 sqm height
-      interaction: game.app.renderer.plugins.interaction,
+      events: game.app.renderer.events,
     });
 
     // Canvas dimensions are set in PIXI.Application initialization in Game.ts
     // Only set CSS display size here
-    game.app.view.style.width = `${GameMap.VIEWPORT_WIDTH * 1.5}px`;
-    game.app.view.style.height = `${GameMap.VIEWPORT_HEIGHT * 1.5}px`;
+    game.app.canvas.style.width = `${GameMap.VIEWPORT_WIDTH * 1.5}px`;
+    game.app.canvas.style.height = `${GameMap.VIEWPORT_HEIGHT * 1.5}px`;
 
     // add the viewport to the stage
     game.app.stage.addChild(this.viewport);

@@ -16,24 +16,24 @@ export const globalDrag: GlobalDrag = {
   current: {},
 };
 
-const lastParent = (displayObject: PIXI.DisplayObject): PIXI.Container => {
-  if (displayObject.parent) {
-    return lastParent(displayObject.parent);
+const lastParent = (container: PIXI.Container): PIXI.Container => {
+  if (container.parent) {
+    return lastParent(container.parent);
   }
 
-  return displayObject as PIXI.Container;
+  return container;
 };
 
-export const draggable = (type: string, target: PIXI.DisplayObject) => {
+export const draggable = (type: string, target: PIXI.Container) => {
   target.interactive = true;
 
-  const onDragMove = (event: PIXI.InteractionEvent) => {
+  const onDragMove = (event: PIXI.FederatedPointerEvent) => {
     if (globalDrag.isClicked && !globalDrag.isDragging) {
       return onDragStart(event);
     }
   };
 
-  const onDragStart = (event: PIXI.InteractionEvent) => {
+  const onDragStart = (event: PIXI.FederatedPointerEvent) => {
     const container = lastParent(target);
     console.log("drag started", container);
 
@@ -61,7 +61,7 @@ export const draggable = (type: string, target: PIXI.DisplayObject) => {
   target.on("touchendoutside", onDragEnd);
 };
 
-export const droppable = (accept: string[], target: PIXI.DisplayObject) => {
+export const droppable = (accept: string[], target: PIXI.Container) => {
   target.interactive = true;
 
   const onDrop = (event: any) => {

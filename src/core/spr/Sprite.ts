@@ -42,13 +42,7 @@ export class Sprite {
     }
   }
 
-  colorize(
-    template: Sprite,
-    redMask: Color,
-    greenMask: Color,
-    blueMask: Color,
-    yellowMask: Color
-  ) {
+  colorize(template: Sprite, redMask: Color, greenMask: Color, blueMask: Color, yellowMask: Color) {
     const templatePixels = template.getPixels();
     const pixels = this.getPixels();
     for (let p = 0; p < template.getPixelsCount(); ++p) {
@@ -80,7 +74,7 @@ export class Sprite {
   overwriteMask(
     color: number,
     insideColor: number = Color.white,
-    outsideColor: number = Color.alpha
+    outsideColor: number = Color.alpha,
   ) {}
 
   getWidth() {
@@ -108,15 +102,14 @@ export class Sprite {
   }
 
   getUint8ClampedArray() {
-    return new Uint8ClampedArray(this.getPixels().buffer.buffer);
+    const buffer = this.getPixels().buffer.buffer;
+    // DataView.buffer is ArrayBufferLike but we need ArrayBuffer for Uint8ClampedArray
+    // In practice, it's always ArrayBuffer in this context
+    return new Uint8ClampedArray(buffer as ArrayBuffer);
   }
 
   getImageData(): ImageData {
-    return new ImageData(
-      this.getUint8ClampedArray(),
-      this.getWidth(),
-      this.getHeight()
-    );
+    return new ImageData(this.getUint8ClampedArray(), this.getWidth(), this.getHeight());
   }
 
   readFromSpr(fin: FileInput, client: Client) {
@@ -139,11 +132,7 @@ export class Sprite {
       const transparentPixels = fin.getU16();
       const coloredPixels = fin.getU16();
 
-      for (
-        let i = 0;
-        i < transparentPixels && writePos < SprManager.SPRITE_DATA_SIZE;
-        i++
-      ) {
+      for (let i = 0; i < transparentPixels && writePos < SprManager.SPRITE_DATA_SIZE; i++) {
         this.pixels.addU8(0x00);
         this.pixels.addU8(0x00);
         this.pixels.addU8(0x00);
@@ -151,11 +140,7 @@ export class Sprite {
         writePos += 4;
       }
 
-      for (
-        let i = 0;
-        i < coloredPixels && writePos < SprManager.SPRITE_DATA_SIZE;
-        i++
-      ) {
+      for (let i = 0; i < coloredPixels && writePos < SprManager.SPRITE_DATA_SIZE; i++) {
         this.pixels.addU8(fin.getU8());
         this.pixels.addU8(fin.getU8());
         this.pixels.addU8(fin.getU8());

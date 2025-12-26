@@ -2,6 +2,7 @@
   "name": "otcts",
   "version": "1.0.0",
   "license": "MIT",
+  "packageManager": "pnpm@10.14.0",
   "main": "src/app/index.html",
   "scripts": {
     "dev": "vite",
@@ -12,31 +13,27 @@
     "type-check": "tsc --noEmit",
     "prepare": "husky"
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "oxfmt --write"
+    ]
+  },
   "devDependencies": {
     "@types/node": "^24.10.4",
     "@types/node-rsa": "^1.0.0",
-    "concurrently": "^5.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "oxfmt": "^0.20.0",
     "oxlint": "^1.35.0",
-    "ts-node": "^8.10.2",
     "typescript": "^5.9.3",
     "vite": "^7.3.0"
   },
   "dependencies": {
     "chaussette": "^0.2.5",
     "fast-xml-parser": "^3.17.4",
-    "isomorphic-fetch": "^2.2.1",
     "mitt": "^2.1.0",
     "node-rsa": "^1.1.1",
-    "pixi-viewport": "^4.12.1",
-    "pixi.js": "^5.3.0"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "oxfmt --write"
-    ]
-  },
-  "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748"
+    "pixi-viewport": "^6.0.3",
+    "pixi.js": "^8.14.3"
+  }
 }
