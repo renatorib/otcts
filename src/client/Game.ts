@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import { Application } from "pixi.js";
 import { SprManager } from "../core/spr/SprManager";
 import { DatManager } from "../core/dat/DatManager";
 import { OtbManager } from "../core/otb/OtbManager";
@@ -6,20 +6,20 @@ import { OtbmManager } from "../core/otbm/OtbmManager";
 import { XMLManager } from "../core/xml/XMLManager";
 import { EventEmitter } from "./EventEmitter";
 import { Clock } from "./Clock";
-import { Input, InputEvent } from "./Input";
+import { Input } from "./Input";
 import { GameMap } from "./GameMap";
 import { Creature } from "./Creature";
 import { Effect } from "./Effect";
 import { Direction } from "../core/common/enums";
 
-const SPR_URL = "http://localhost:5000/client/Tibia.spr";
-const DAT_URL = "http://localhost:5000/client/Tibia.dat";
-const OTB_URL = "http://localhost:5000/server/items.otb";
-const ITEMS_XML_URL = "http://localhost:5000/server/items.xml";
-const OTBM_URL = "http://localhost:5000/server/world.otbm";
-const SPAWN_XML_URL = "http://localhost:5000/server/world-spawn.xml";
-const HOUSE_XML_URL = "http://localhost:5000/server/world-house.xml";
-const OUTFITS_XML_URL = "http://localhost:5000/server/outfits.xml";
+const SPR_URL = "http://localhost:5173/client/Tibia.spr";
+const DAT_URL = "http://localhost:5173/client/Tibia.dat";
+const OTB_URL = "http://localhost:5173/server/items.otb";
+const ITEMS_XML_URL = "http://localhost:5173/server/items.xml";
+const OTBM_URL = "http://localhost:5173/server/world.otbm";
+const SPAWN_XML_URL = "http://localhost:5173/server/world-spawn.xml";
+const HOUSE_XML_URL = "http://localhost:5173/server/world-house.xml";
+const OUTFITS_XML_URL = "http://localhost:5173/server/outfits.xml";
 
 const getDirDiff = (direction: Direction) => {
   const dirDiff: { [k: number]: [number, number, number] } = {
@@ -50,14 +50,25 @@ class Game extends EventEmitter {
   map!: GameMap;
   input!: Input;
   player = new Creature(1);
-  app = new PIXI.Application();
+  app = new Application();
 
   constructor() {
     super();
 
     this.loaded = false;
     this.clock = new Clock();
-    this.loadAssets();
+    // Start async initialization but don't await in constructor
+    this.init().catch((err) => {
+      console.error("Failed to initialize game:", err);
+    });
+  }
+
+  async init() {
+    await this.app.init({
+      width: 15 * 32, // 480px - matches GameMap.VIEWPORT_WIDTH
+      height: 11 * 32, // 352px - matches GameMap.VIEWPORT_HEIGHT
+    });
+    await this.loadAssets();
   }
 
   async loadAssets() {
@@ -75,7 +86,7 @@ class Game extends EventEmitter {
   onLoadAssets() {
     this.map = GameMap.fromOtbm(this.otbm);
     this.input = new Input();
-    document.getElementById("app")!.appendChild(this.app.view);
+    document.getElementById("app")!.appendChild(this.app.canvas);
 
     this.map.getTile([23, 22, 7])?.addCreature(this.player);
 
@@ -99,15 +110,11 @@ class Game extends EventEmitter {
 
     this.input.on("command", (cmd: string) => {
       if (cmd === "r") {
-        this.player.outfit.setMount(
-          this.player.outfit.getMount() !== 0 ? 0 : 373
-        );
+        this.player.outfit.setMount(this.player.outfit.getMount() !== 0 ? 0 : 373);
       }
 
       if (cmd === "a") {
-        this.map
-          .getTile(this.player.position.clone().toCoords())
-          ?.addEffect(new Effect(3));
+        this.map.getTile(this.player.position.clone().toCoords())?.addEffect(new Effect(3));
         this.update();
       }
     });

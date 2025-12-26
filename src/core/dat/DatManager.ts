@@ -12,11 +12,7 @@ export class DatManager {
   private contentRevision: number = 0;
 
   constructor(public client: Client) {
-    for (
-      let i = DatThingCategory.ThingCategoryItem;
-      i < DatThingCategory.ThingLastCategory;
-      ++i
-    ) {
+    for (let i = DatThingCategory.ThingCategoryItem; i < DatThingCategory.ThingLastCategory; ++i) {
       this.thingTypes[i] = [];
     }
   }
@@ -34,13 +30,8 @@ export class DatManager {
   };
 
   getThingType(id: number, category: DatThingCategory): DatThingType {
-    if (
-      category >= DatThingCategory.ThingLastCategory ||
-      id >= this.thingTypes[category].length
-    ) {
-      console.error(
-        `invalid thing type client id ${id} in category ${category}`
-      );
+    if (category >= DatThingCategory.ThingLastCategory || id >= this.thingTypes[category].length) {
+      console.error(`invalid thing type client id ${id} in category ${category}`);
       return DatManager.nullThingType;
     }
     return this.thingTypes[category][id];
@@ -70,7 +61,7 @@ export class DatManager {
     return this.getThingType(id, DatThingCategory.ThingCategoryMissile);
   }
 
-  isValidDatId(id: number, category: DatThingCategory): boolean {
+  isValidDatId(_id: number, _category: DatThingCategory): boolean {
     return true;
   }
 
@@ -79,11 +70,11 @@ export class DatManager {
   }
 
   getDatSignature() {
-    throw this.datSignature;
+    return this.datSignature;
   }
 
   getContentRevision() {
-    throw this.contentRevision;
+    return this.contentRevision;
   }
 
   loadDatFromBuffer(buffer: ArrayBuffer) {
@@ -110,22 +101,12 @@ export class DatManager {
       }
 
       const clientTranslationArray = this.getClientTranslationArray();
-      for (
-        let category = 0;
-        category < DatThingCategory.ThingLastCategory;
-        ++category
-      ) {
+      for (let category = 0; category < DatThingCategory.ThingLastCategory; ++category) {
         let firstId = 1;
         if (category == DatThingCategory.ThingCategoryItem) firstId = 100;
         for (let id = firstId; id < this.thingTypes[category].length; ++id) {
           let type = new DatThingType();
-          type.unserialize(
-            id,
-            category,
-            fin,
-            this.client,
-            clientTranslationArray
-          );
+          type.unserialize(id, category, fin, this.client, clientTranslationArray);
           this.thingTypes[category][id] = type;
         }
       }
@@ -141,42 +122,25 @@ export class DatManager {
     const fin = new FileOutput();
     fin.addU32(this.datSignature);
 
-    for (
-      let category = 0;
-      category < DatThingCategory.ThingLastCategory;
-      ++category
-    ) {
+    for (let category = 0; category < DatThingCategory.ThingLastCategory; ++category) {
       fin.addU16(this.thingTypes[category].length - 1);
     }
 
     const clientTranslationArray = this.getClientTranslationArray();
 
-    for (
-      let category = 0;
-      category < DatThingCategory.ThingLastCategory;
-      ++category
-    ) {
+    for (let category = 0; category < DatThingCategory.ThingLastCategory; ++category) {
       let firstId = 1;
       if (category == DatThingCategory.ThingCategoryItem) firstId = 100;
 
       for (let id = firstId; id < this.thingTypes[category].length; ++id)
-        this.thingTypes[category][id].serialize(
-          fin,
-          category,
-          this.client,
-          clientTranslationArray
-        );
+        this.thingTypes[category][id].serialize(fin, category, this.client, clientTranslationArray);
     }
     return fin;
   }
 
   getClientTranslationArray(): number[] {
     let clientAttributesTranslator: { [key: string]: any } = {};
-    for (
-      let thingAttr = 0;
-      thingAttr < DatThingAttr.ThingLastAttr;
-      ++thingAttr
-    ) {
+    for (let thingAttr = 0; thingAttr < DatThingAttr.ThingLastAttr; ++thingAttr) {
       if (DatThingAttr[thingAttr] === undefined) {
         continue;
       }
@@ -186,10 +150,8 @@ export class DatManager {
          * incremented by 1 to make space for 16 as
          * "No Movement Animation" flag.
          */
-        if (thingAttr == DatThingAttr.ThingAttrNoMoveAnimation)
-          clientDatAttribute = 16;
-        else if (thingAttr >= DatThingAttr.ThingAttrPickupable)
-          clientDatAttribute += 1;
+        if (thingAttr == DatThingAttr.ThingAttrNoMoveAnimation) clientDatAttribute = 16;
+        else if (thingAttr >= DatThingAttr.ThingAttrPickupable) clientDatAttribute += 1;
       } else if (this.client.getClientVersion() >= 860) {
         /* Default attribute values follow
          * the format of 8.6-9.86.
@@ -202,12 +164,10 @@ export class DatManager {
          */
         if (thingAttr == DatThingAttr.ThingAttrChargeable)
           clientDatAttribute = DatThingAttr.ThingAttrWritable;
-        else if (thingAttr >= DatThingAttr.ThingAttrWritable)
-          clientDatAttribute += 1;
+        else if (thingAttr >= DatThingAttr.ThingAttrWritable) clientDatAttribute += 1;
       } else if (this.client.getClientVersion() >= 755) {
         /* In 7.55-7.72 attributes 23 is "Floor Change". */
-        if (thingAttr == DatThingAttr.ThingAttrFloorChange)
-          clientDatAttribute = 23;
+        if (thingAttr == DatThingAttr.ThingAttrFloorChange) clientDatAttribute = 23;
       } else if (this.client.getClientVersion() >= 740) {
         /* In 7.4-7.5 attribute "Ground Border" did not exist
          * attributes 1-15 have to be adjusted.
@@ -219,17 +179,14 @@ export class DatManager {
         else if (thingAttr == DatThingAttr.ThingAttrFloorChange) thingAttr = 17;
         else if (thingAttr == DatThingAttr.ThingAttrFullGround) thingAttr = 18;
         else if (thingAttr == DatThingAttr.ThingAttrElevation) thingAttr = 19;
-        else if (thingAttr == DatThingAttr.ThingAttrDisplacement)
-          thingAttr = 20;
-        else if (thingAttr == DatThingAttr.ThingAttrMinimapColor)
-          thingAttr = 22;
+        else if (thingAttr == DatThingAttr.ThingAttrDisplacement) thingAttr = 20;
+        else if (thingAttr == DatThingAttr.ThingAttrMinimapColor) thingAttr = 22;
         else if (thingAttr == DatThingAttr.ThingAttrRotateable) thingAttr = 23;
         else if (thingAttr == DatThingAttr.ThingAttrLyingCorpse) thingAttr = 24;
         else if (thingAttr == DatThingAttr.ThingAttrHangable) thingAttr = 25;
         else if (thingAttr == DatThingAttr.ThingAttrHookSouth) thingAttr = 26;
         else if (thingAttr == DatThingAttr.ThingAttrHookEast) thingAttr = 27;
-        else if (thingAttr == DatThingAttr.ThingAttrAnimateAlways)
-          thingAttr = 28;
+        else if (thingAttr == DatThingAttr.ThingAttrAnimateAlways) thingAttr = 28;
 
         /* "Multi Use" and "Force Use" are swapped */
         if (thingAttr == DatThingAttr.ThingAttrMultiUse)

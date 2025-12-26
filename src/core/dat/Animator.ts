@@ -14,7 +14,7 @@ export class Animator {
     if (durations) {
       // TODO: understand what sprites have different min/max
       const min = durations[0];
-      const max = durations[1];
+      const _max = durations[1];
       return min;
     }
 

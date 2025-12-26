@@ -120,8 +120,7 @@ export class OtbManager {
       if (rootAttr == 0x01) {
         // OTB_ROOT_ATTR_VERSION
         let size = root.getU16();
-        if (size != 4 + 4 + 4 + 128)
-          throw new Error("invalid otb root attr version size");
+        if (size != 4 + 4 + 4 + 128) throw new Error("invalid otb root attr version size");
 
         this.otbMajorVersion = root.getU32();
         this.otbMinorVersion = root.getU32();
@@ -131,7 +130,6 @@ export class OtbManager {
 
       for (let node of root.getChildren()) {
         let itemType = new OtbItemType();
-        ArrayBuffer;
         itemType.unserialize(node, this);
         this.addItemType(itemType);
       }

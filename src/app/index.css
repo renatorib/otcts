@@ -12,5 +12,5 @@ body {
 }
 
 canvas {
-  width: 800px;
+  /* Width and height are set programmatically in GameMap.ts */
 }

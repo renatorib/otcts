@@ -1,26 +1,15 @@
 import { parse } from "fast-xml-parser";
-import { getFetch } from "../common/helpers";
 
-export class XMLManager {
-  data: any;
+export class XMLManager<T = unknown> {
+  constructor(public data: T) {}
 
-  constructor() {}
-
-  static fromUrl = async (url: string, clientVersion: number = 1200) => {
-    const fetch = getFetch();
-
+  static fromUrl = async <T = unknown>(url: string, _clientVersion: number = 1200) => {
     try {
       const content = await fetch(url).then((r) => r.text());
-      const xml = new XMLManager();
-      xml.loadXml(content);
+      const xml = new XMLManager(parse(content) as T);
       return xml;
     } catch (e) {
-      console.error(e);
-      return new XMLManager();
+      throw new Error(`Failed to load XML from ${url}: ${e}`);
     }
   };
-
-  loadXml(content: string) {
-    this.data = parse(content);
-  }
 }

@@ -8,7 +8,7 @@ import { game } from "./Game";
 
 export class GameMap {
   tileSize = 32;
-  tiles = new Map<Symbol, Tile>();
+  tiles = new Map<symbol, Tile>();
   mapWidth!: number;
   mapHeight!: number;
   viewport!: Viewport;
@@ -28,13 +28,13 @@ export class GameMap {
       screenHeight: GameMap.VIEWPORT_HEIGHT,
       worldWidth: 55 * 32, // 55 sqm width
       worldHeight: 55 * 32, // 55 sqm height
-      interaction: game.app.renderer.plugins.interaction,
+      events: game.app.renderer.events,
     });
 
-    game.app.view.width = GameMap.VIEWPORT_WIDTH;
-    game.app.view.height = GameMap.VIEWPORT_HEIGHT;
-    game.app.view.style.width = `${GameMap.VIEWPORT_WIDTH * 1.5}px`;
-    game.app.view.style.height = `${GameMap.VIEWPORT_HEIGHT * 1.5}px`;
+    // Canvas dimensions are set in PIXI.Application initialization in Game.ts
+    // Only set CSS display size here
+    game.app.canvas.style.width = `${GameMap.VIEWPORT_WIDTH * 1.5}px`;
+    game.app.canvas.style.height = `${GameMap.VIEWPORT_HEIGHT * 1.5}px`;
 
     // add the viewport to the stage
     game.app.stage.addChild(this.viewport);
@@ -51,7 +51,7 @@ export class GameMap {
 
     const mapData = nodes.find((n) => n.type === OtbmNodeTypes.MapData);
     for (const nodeTileArea of (mapData!.features as OtbmNodeTileArea[]).filter(
-      (n) => n.type === OtbmNodeTypes.TileArea
+      (n) => n.type === OtbmNodeTypes.TileArea,
     )) {
       for (const nodeTile of nodeTileArea.tiles) {
         const { x, y, z, tileId, flags, items } = nodeTile;

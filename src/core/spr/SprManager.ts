@@ -7,8 +7,7 @@ import { FileOutput } from "../file/FileOutput";
 
 export class SprManager {
   public static SPRITE_SIZE = 32;
-  public static SPRITE_DATA_SIZE =
-    SprManager.SPRITE_SIZE * SprManager.SPRITE_SIZE * 4;
+  public static SPRITE_DATA_SIZE = SprManager.SPRITE_SIZE * SprManager.SPRITE_SIZE * 4;
 
   private signature = 0;
   private spritesCount = 0;
@@ -42,7 +41,7 @@ export class SprManager {
         : sprFile.getU16();
       this.spritesOffset = sprFile.tell();
       return true;
-    } catch (e) {
+    } catch {
       console.error("Failed to preload sprites");
       this.sprFile = null;
       return false;
@@ -63,13 +62,11 @@ export class SprManager {
       const spriteAddress = this.sprFile.getU32();
       if (spriteAddress === 0) return false;
       this.sprFile.seek(spriteAddress);
-      const sprite = new Sprite(
-        new Size(SprManager.SPRITE_SIZE, SprManager.SPRITE_SIZE)
-      );
+      const sprite = new Sprite(new Size(SprManager.SPRITE_SIZE, SprManager.SPRITE_SIZE));
       sprite.readFromSpr(this.sprFile, this.client);
       this.sprites[id] = sprite;
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   }
@@ -99,8 +96,7 @@ export class SprManager {
     const sprFile = new FileOutput();
 
     sprFile.addU32(this.signature);
-    if (this.client.getFeature(GameFeature.GameSpritesU32))
-      sprFile.addU32(this.getSpritesCount());
+    if (this.client.getFeature(GameFeature.GameSpritesU32)) sprFile.addU32(this.getSpritesCount());
     else sprFile.addU16(this.getSpritesCount());
 
     const spritesOffset = sprFile.tell();

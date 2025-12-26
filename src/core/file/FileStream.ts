@@ -15,7 +15,7 @@ export abstract class FileStream {
     return this.data.getUint8Array(byteOffset);
   }
 
-  getOffsetBuffer(byteOffset?: number): Buffer {
+  getOffsetBuffer(_byteOffset?: number): Buffer {
     return this.data.getBuffer(this.offset);
   }
 
@@ -38,9 +38,7 @@ export abstract class FileStream {
   }
 
   getU64(): number {
-    const v =
-      this.data.getU32(this.offset) +
-      this.data.getU32(this.offset) * 256 * 256 * 256 * 256;
+    const v = this.data.getU32(this.offset) + this.data.getU32(this.offset) * 256 * 256 * 256 * 256;
     this.offset += 8;
     return v;
   }
@@ -106,8 +104,7 @@ export abstract class FileStream {
   }
 
   skipBytes(bytesCount: number): void {
-    if (this.offset + bytesCount > this.data.size)
-      throw new Error("Invalid offset. Cannot read.");
+    if (this.offset + bytesCount > this.data.size) throw new Error("Invalid offset. Cannot read.");
 
     this.offset += bytesCount;
   }

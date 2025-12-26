@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 
-import { Client } from "../core/structures/Client";
 import { OtbmManager } from "../core/otbm/OtbmManager";
 
 const OTBM_PATH = path.resolve(__dirname, "../../data/server/world.otbm");

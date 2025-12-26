@@ -1,8 +1,8 @@
-import * as PIXI from "pixi.js";
+// import * as PIXI from "pixi.js";
 import { Direction } from "../core/common/enums";
 import { Cooldown } from "./Cooldown";
 
-class LocalPlayer {
+export class LocalPlayer {
   states = 0;
   vocation = 0;
   blessings = 0;
@@ -30,7 +30,7 @@ class LocalPlayer {
 
   constructor() {}
 
-  canWalk(direction: Direction) {
+  canWalk(_direction: Direction) {
     if (this.walkLock.isNotExpired()) return false;
     //
     // do the walk

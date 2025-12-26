@@ -78,7 +78,6 @@ export enum GameFeature {
 }
 
 export enum FrameGroupType {
-  Default = 0,
   Idle = 0,
   Walking = 1,
 }

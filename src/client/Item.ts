@@ -1,8 +1,4 @@
-import {
-  DatThingCategory,
-  FrameGroupType,
-  FluidsColor,
-} from "../core/common/enums";
+import { DatThingCategory, FrameGroupType, FluidsColor } from "../core/common/enums";
 import { Thing } from "./Thing";
 import { game } from "./Game";
 import { draggable } from "./dnd";
@@ -68,7 +64,7 @@ export class Item extends Thing {
   }
 
   onAfterDraw() {
-    if (!this.dat.isNotMoveable || this.dat.isPickupable) {
+    if (!this.dat.isNotMoveable() || this.dat.isPickupable()) {
       draggable("item", this.display);
     }
   }

@@ -18,18 +18,16 @@ export abstract class OtbmNode {
     // not throw error because it is not required
   }
 
-  read(tree: BinaryTree) {
+  read(_tree: BinaryTree) {
     throw new Error("Read function not implemented.");
   }
 
-  write(fout: BinaryTree) {
+  write(_fout: BinaryTree) {
     throw new Error("Write function not implemented.");
   }
 
   unsupportedChildType(type: any) {
-    throw new Error(
-      `[otbm] Unsupported child of type [0x${type.toString(16)}]`
-    );
+    throw new Error(`[otbm] Unsupported child of type [0x${type.toString(16)}]`);
   }
 
   readFlags(flags: number): OtbmTileFlags {
