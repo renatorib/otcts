@@ -1,35 +1,39 @@
 {
-  "name": "tibia-client-2",
+  "name": "otcts",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "index.html",
+  "packageManager": "pnpm@10.14.0",
+  "main": "src/app/index.html",
   "scripts": {
-    "dev:assets": "serve ./data -p 5000 --cors",
-    "dev:game": "parcel serve ./index.html --open",
-    "dev": "concurrently 'yarn dev:assets' 'yarn dev:game'",
-    "start": "concurrently 'yarn dev:assets' 'yarn dev:game'",
-    "build": "parcel build ./index.html ",
-    "lint": "eslint . --ext .ts"
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "type-check": "tsc --noEmit",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "oxfmt --write"
+    ]
   },
   "devDependencies": {
-    "@types/node": "^14.6.0",
+    "@types/node": "^24.10.4",
     "@types/node-rsa": "^1.0.0",
-    "@typescript-eslint/eslint-plugin": "^3.6.0",
-    "@typescript-eslint/parser": "^3.6.0",
-    "concurrently": "^5.2.0",
-    "eslint": "^7.4.0",
-    "parcel": "2.0.0-beta.1",
-    "serve": "^11.3.2",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.6"
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "oxfmt": "^0.20.0",
+    "oxlint": "^1.35.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0"
   },
   "dependencies": {
     "chaussette": "^0.2.5",
     "fast-xml-parser": "^3.17.4",
-    "isomorphic-fetch": "^2.2.1",
     "mitt": "^2.1.0",
     "node-rsa": "^1.1.1",
-    "pixi-viewport": "^4.12.1",
-    "pixi.js": "^5.3.0"
+    "pixi-viewport": "^6.0.3",
+    "pixi.js": "^8.14.3"
   }
 }

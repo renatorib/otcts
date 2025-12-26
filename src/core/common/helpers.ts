@@ -13,19 +13,6 @@ export const sortObjectByKey = (obj: any): any => {
     }, {});
 };
 
-export const getFetch = () => {
-  const fetch =
-    (typeof globalThis !== "undefined" && globalThis.fetch) ||
-    (typeof window !== "undefined" && window.fetch);
-
-  if (!fetch)
-    throw new Error(
-      "No fetch found in your globalThis. isomorphic-fetch should be included in your root file."
-    );
-
-  return fetch;
-};
-
 export const randomIntFromInterval = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };

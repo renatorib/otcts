@@ -1,11 +1,9 @@
 import "./index.css";
-import "isomorphic-fetch";
-import { main } from "./src/client";
+import { main } from "../client";
 
 main();
 
 /* import "./index.css";
-import "isomorphic-fetch";
 
 import { Client } from "./src/core/structures/Client";
 import { DatManager } from "./src/core/dat/DatManager";
@@ -14,8 +12,8 @@ import { FileInput } from "./src/core/file/FileInput";
 
 import { Sprite } from "./src/core/spr/Sprite";
 
-const DAT_URL = "http://localhost:5000/client/Tibia.dat";
-const SPR_URL = "http://localhost:5000/client/Tibia.spr";
+const DAT_URL = "http://localhost:5173/client/Tibia.dat";
+const SPR_URL = "http://localhost:5173/client/Tibia.spr";
 
 const fileInputFromUrl = async (url: string) =>
   new FileInput(await fetch(url).then((response) => response.arrayBuffer()));

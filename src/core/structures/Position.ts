@@ -4,12 +4,8 @@ export class Position {
   constructor(
     public x: number = 0,
     public y: number = 0,
-    public z: number = 0
-  ) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-  }
+    public z: number = 0,
+  ) {}
 
   static angle = (from: Position, to: Position): number => {
     if (from.x === to.x && from.y === to.y) return 0;
@@ -74,16 +70,16 @@ export class Position {
   }
 
   set(x: number, y: number, z: number) {
-    x != null && this.setX(x);
-    y != null && this.setY(y);
-    z != null && this.setZ(z);
+    if (x != null) this.setX(x);
+    if (y != null) this.setY(y);
+    if (z != null) this.setZ(z);
     return this;
   }
 
   add(x: number, y: number, z: number) {
-    x != null && this.setX(this.x + x);
-    y != null && this.setY(this.y + y);
-    z != null && this.setZ(this.z + z);
+    if (x != null) this.setX(this.x + x);
+    if (y != null) this.setY(this.y + y);
+    if (z != null) this.setZ(this.z + z);
     return this;
   }
 

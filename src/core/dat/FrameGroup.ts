@@ -1,6 +1,5 @@
 import { Animator } from "./Animator";
 import { Size } from "../structures/Size";
-import { FrameGroupType } from "../common/enums";
 
 export class FrameGroup {
   size: Size = new Size();
@@ -19,11 +18,7 @@ export class FrameGroup {
   }
 
   isPatterned() {
-    return (
-      this.getNumPatternX() > 1 ||
-      this.getNumPatternY() > 1 ||
-      this.getNumPatternZ() > 1
-    );
+    return this.getNumPatternX() > 1 || this.getNumPatternY() > 1 || this.getNumPatternZ() > 1;
   }
 
   isLarge() {
@@ -111,9 +106,7 @@ export class FrameGroup {
         * this.size.width() + widthIndex;
 
     if (index > this.spritesIndex.length) {
-      throw new Error(
-        "[FrameGroup::getSpriteIndex] index value offset spritesIndex"
-      );
+      throw new Error("[FrameGroup::getSpriteIndex] index value offset spritesIndex");
     }
 
     return index;

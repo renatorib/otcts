@@ -5,7 +5,7 @@ import { FileInput } from "../core/file/FileInput";
 const loginServer = new net.Server();
 const gameServer = new net.Server();
 
-function toArrayBuffer(buf: Buffer) {
+function _toArrayBuffer(buf: Buffer) {
   const ab = new ArrayBuffer(buf.length);
   const view = new Uint8Array(ab);
   for (var i = 0; i < buf.length; ++i) {
@@ -14,7 +14,7 @@ function toArrayBuffer(buf: Buffer) {
   return ab;
 }
 
-const pk = new NodeRSA(
+const _pk = new NodeRSA(
   `-----BEGIN RSA PRIVATE KEY-----
 MIICXAIBAAKBgQCbZGkDtFsHrJVlaNhzU71xZROd15QHA7A+bdB5OZZhtKg3qmBWHXzLlFL6AIBZ
 SQmIKrW8pYoaGzX4sQWbcrEhJhHGFSrT27PPvuetwUKnXT11lxUJwyHFwkpb1R/UYPAbThW+sN4Z
@@ -29,7 +29,7 @@ eb05++112fyvO85ABUun524z9lokKNFh45NKLjUCQGshzV43P+RioiBhtEpB/QFzijiS4L2HKNu1
 tdhudnUjWkaf6jJmQS/ppln0hhRMHlk9Vus/bPx7LtuDuo6VQDo=
 -----END RSA PRIVATE KEY-----`,
   "private",
-  { environment: "node" }
+  { environment: "node" },
 );
 
 const messageFromTheClient = (data: Buffer) => {

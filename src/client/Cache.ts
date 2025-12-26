@@ -1,31 +1,32 @@
 const keysToString = <T, K extends keyof T>(obj: T) => {
-  const valueToString = (value: any): string => {
+  const valueToString = (value: unknown): string => {
     const type = typeof value;
     switch (type) {
       case "string":
       case "number":
-        return value;
+        return String(value);
       case "object":
+        if (value === null) return "null";
         return Array.isArray(value)
           ? `[${value.map((v) => valueToString(v)).join(",")}]`
           : keysToString(value);
       default:
-        return value.toString();
+        return String(value);
     }
   };
 
   return `{${(Object.getOwnPropertyNames(obj) as K[])
     .sort()
     .map((key) => {
-      return `${key}:${valueToString(obj[key])}`;
+      return `${String(key)}:${valueToString(obj[key])}`;
     })
     .join(",")}}`;
 };
 
-export class Cache {
-  private _cache: Map<string, any> = new Map();
+export class Cache<T = unknown> {
+  private _cache: Map<string, T> = new Map();
 
-  set(keys: object, value: any) {
+  set(keys: object, value: T) {
     return this._cache.set(keysToString(keys), value);
   }
 

@@ -6,7 +6,6 @@ import { DatManager } from "../core/dat/DatManager";
 import { SprManager } from "../core/spr/SprManager";
 
 import { Client } from "../core/structures/Client";
-import { OtbItemTypeAttr } from "../core/common/enums";
 
 const OTB_PATH = path.resolve(__dirname, "../../data/server/items.otb");
 const DAT_PATH = path.resolve(__dirname, "../../data/client/Tibia.dat");

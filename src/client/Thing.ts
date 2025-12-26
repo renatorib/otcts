@@ -17,7 +17,7 @@ export abstract class Thing {
   position = new Position();
   display = new PIXI.Sprite();
   elevation = 0;
-  textures = new Cache();
+  textures = new Cache<PIXI.Texture>();
 
   constructor(clientId: number) {
     this.clientId = clientId;
@@ -87,10 +87,7 @@ export abstract class Thing {
                 const spriteId = this.frameGroup.getSprite(spriteIndex);
                 const spritePart = game.spr.getSprite(spriteId);
                 if (spritePart) {
-                  sprite.blit(
-                    new Point((w - 1) * tileSize, (h - 1) * tileSize),
-                    spritePart
-                  );
+                  sprite.blit(new Point((w - 1) * tileSize, (h - 1) * tileSize), spritePart);
                 }
               }
             }
@@ -133,17 +130,30 @@ export abstract class Thing {
 
     if (!this.textures.has(cacheKeys)) {
       const sprite = this.processSprite(this.getSprite());
+      const buffer = sprite.getUint8Array();
+      const width = sprite.getWidth();
+      const height = sprite.getHeight();
+
+      // Create BufferImageSource with buffer data in v8
+      const source = new PIXI.BufferImageSource({
+        resource: buffer,
+        width,
+        height,
+      });
+
       this.textures.set(
         cacheKeys,
-        PIXI.Texture.fromBuffer(
-          sprite.getUint8Array(),
-          sprite.getWidth(),
-          sprite.getHeight()
-        )
+        new PIXI.Texture({
+          source,
+        }),
       );
     }
 
-    return this.textures.get(cacheKeys);
+    const texture = this.textures.get(cacheKeys);
+    if (!texture) {
+      throw new Error("Texture not found in cache after setting it");
+    }
+    return texture;
   }
 
   getDisplayDisplacement(): Point {
@@ -163,7 +173,7 @@ export abstract class Thing {
 
     const point = new Point(
       -((width - 1) * tileSize) - this.elevation - displacement.x,
-      -((height - 1) * tileSize) - this.elevation - displacement.y
+      -((height - 1) * tileSize) - this.elevation - displacement.y,
     );
 
     return point.add(displayOffset);
@@ -189,10 +199,7 @@ export abstract class Thing {
         this.display.texture = texture;
       }
 
-      if (
-        this.display.position.x !== position.x ||
-        this.display.position.y !== position.y
-      ) {
+      if (this.display.position.x !== position.x || this.display.position.y !== position.y) {
         this.display.position.set(position.x, position.y);
       }
     }

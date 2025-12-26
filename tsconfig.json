@@ -8,10 +8,10 @@
     "allowJs": true,
     "target": "es2016",
     "lib": ["es6", "dom"],
-    "rootDir": "src",
     "moduleResolution": "node",
     "noImplicitThis": false,
-    "typeRoots": ["node_modules/@types", "types"]
+    "typeRoots": ["node_modules/@types", "types"],
+    "skipLibCheck": true
   },
-  "exclude": ["./types/**/*", "./dist/**/*"]
+  "exclude": ["node_modules", "./types/**/*", "./src/app/dist/**/*"]
 }

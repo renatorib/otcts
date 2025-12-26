@@ -1,0 +1,9 @@
+{
+  "[glob:**/*.{ts,js,tsx,jsx}]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  }
+}
